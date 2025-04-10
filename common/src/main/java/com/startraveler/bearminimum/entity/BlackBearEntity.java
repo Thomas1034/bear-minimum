@@ -1,14 +1,14 @@
 package com.startraveler.bearminimum.entity;
 
+import com.startraveler.bearminimum.Constants;
 import com.startraveler.bearminimum.entity.goal.AbstractBearAttackPlayersGoal;
 import com.startraveler.bearminimum.entity.goal.AbstractBearHurtByTargetGoal;
 import com.startraveler.bearminimum.entity.goal.AbstractBearMeleeAttackGoal;
 import com.startraveler.bearminimum.entity.goal.ForageGoal;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.DamageTypeTags;
-import net.minecraft.tags.EntityTypeTags;
-import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -20,17 +20,17 @@ import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.InstrumentItem;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.biome.Biome;
 
 
 public class BlackBearEntity extends AbstractBearEntity {
-    // Set up proper tags
-    // Bear food blocks: chests, barrels, all crops
-    // Bear foods: bread, honeycomb, fish, honey bottle, glow berry, sweet berry, glow berry
-    // Bear prey: rabbits, all fish
+
+    public static final TagKey<Biome> HAS_BLACK_BEAR_SPAWNS = TagKey.create(Registries.BIOME, Constants.id("has_black_bear_spawns"));
+
     public static final BearFoodPreferences BLACK_BEAR_FOODS = new BearFoodPreferences(
-            ItemTags.FOX_FOOD,
-            EntityTypeTags.UNDEAD,
-            BlockTags.CROPS
+            BearFoodPreferences.BLACK_BEAR_FOOD,
+            BearFoodPreferences.BLACK_BEAR_PREY,
+            BearFoodPreferences.BLACK_BEAR_FORAGE
     );
 
     public BlackBearEntity(EntityType<? extends BlackBearEntity> entityType, Level level) {
@@ -70,7 +70,7 @@ public class BlackBearEntity extends AbstractBearEntity {
                         16.0F,
                         SCARED_BOOST * SCARED_BOOST,
                         SCARED_BOOST * SCARED_BOOST,
-                        EntitySelector.NO_CREATIVE_OR_SPECTATOR::test
+                        entity -> true
                 )
         );
         this.goalSelector.addGoal(2, new BreedGoal(this, 1 / SCARED_BOOST));
@@ -124,5 +124,7 @@ public class BlackBearEntity extends AbstractBearEntity {
         );
         this.targetSelector.addGoal(5, new ResetUniversalAngerTargetGoal<>(this, false));
     }
+
+
 
 }

@@ -2,6 +2,14 @@
 	"bearminimum.configuration.rebalance_polar_bears": "Rebalance Polar Bears",
 	"entity.bearminimum.black_bear": "Black Bear",
 	"entity.bearminimum.brown_bear": "Brown Bear",
+	"item.bearminimum.black_bear_spawn_egg": "Black Bear Spawn Egg",
+	"item.bearminimum.brown_bear_spawn_egg": "Brown Bear Spawn Egg",
 	"item.bearminimum.bear_meat": "Bear Meat",
-	"item.bearminimum.cooked_bear_meat": "Cooked Bear Meat"
+	"item.bearminimum.cooked_bear_meat": "Cooked Bear Meat",
+	"tag.item.bearminimum.black_bear_food": "Black Bear Food",
+	"tag.entity_type.bearminimum.black_bear_prey": "Black Bear Prey",
+	"tag.entity_type.bearminimum.black_bear_forage": "Black Bear Forages For",
+	"tag.item.bearminimum.black_bear_food": "Brown Bear Food",
+	"tag.entity_type.bearminimum.black_bear_prey": "Brown Bear Prey",
+	"tag.entity_type.bearminimum.black_bear_forage": "Brown Bear Forages For"
 }

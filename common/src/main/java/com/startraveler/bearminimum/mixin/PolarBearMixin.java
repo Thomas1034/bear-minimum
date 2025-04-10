@@ -59,7 +59,7 @@ public abstract class PolarBearMixin {
                         bearminimum$PERSONAL_SPACE_DISTANCE * 3,
                         AbstractBearEntity.SCARED_BOOST,
                         AbstractBearEntity.SCARED_BOOST,
-                        EntitySelector.NO_CREATIVE_OR_SPECTATOR::test
+                        entity -> true
                 )
         );
         ((MobMixin) thisBear).getGoalSelector().addGoal(5, new BreedGoal(thisBear, 0.8));
@@ -69,8 +69,8 @@ public abstract class PolarBearMixin {
                         Player.class,
                         (entity) -> !thisBear.isAngry(),
                         bearminimum$PERSONAL_SPACE_DISTANCE * 2,
-                        AbstractBearEntity.SCARED_BOOST,
-                        AbstractBearEntity.SCARED_BOOST,
+                        1 / AbstractBearEntity.SCARED_BOOST,
+                        1 / AbstractBearEntity.SCARED_BOOST,
                         EntitySelector.NO_CREATIVE_OR_SPECTATOR::test
                 )
         );
@@ -81,8 +81,8 @@ public abstract class PolarBearMixin {
                         Villager.class,
                         (entity) -> !thisBear.isAngry(),
                         bearminimum$PERSONAL_SPACE_DISTANCE * 2,
-                        AbstractBearEntity.SCARED_BOOST,
-                        AbstractBearEntity.SCARED_BOOST,
+                        1 / AbstractBearEntity.SCARED_BOOST,
+                        1 / AbstractBearEntity.SCARED_BOOST,
                         EntitySelector.NO_CREATIVE_OR_SPECTATOR::test
                 )
         );

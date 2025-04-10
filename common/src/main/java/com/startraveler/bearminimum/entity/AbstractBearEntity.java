@@ -1,6 +1,8 @@
 package com.startraveler.bearminimum.entity;
 
 
+import com.startraveler.bearminimum.Constants;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
@@ -20,6 +22,7 @@ public abstract class AbstractBearEntity extends PolarBear {
     public AbstractBearEntity(EntityType<? extends AbstractBearEntity> entityType, Level level, BearFoodPreferences foodPreferences) {
         super(entityType, level);
         this.foodPreferences = foodPreferences;
+
     }
 
     @Override

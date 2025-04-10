@@ -12,6 +12,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.NestedLootTable;
@@ -50,6 +51,20 @@ public class BearMinimum {
                     .build(Constants.key(Registries.ENTITY_TYPE, "brown_bear"))
     );
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Constants.MOD_ID);
+    public static final RegistryObject<Item> BLACK_BEAR_SPAWN_EGG = ITEMS.register(
+            "black_bear_spawn_egg",
+            () -> new SpawnEggItem(
+                    BLACK_BEAR.get(), new Item.Properties()
+                    .setId(Constants.key(Registries.ITEM, "black_bear_spawn_egg"))
+            )
+    );
+    public static final RegistryObject<Item> BROWN_BEAR_SPAWN_EGG = ITEMS.register(
+            "brown_bear_spawn_egg",
+            () -> new SpawnEggItem(
+                    BROWN_BEAR.get(), new Item.Properties()
+                    .setId(Constants.key(Registries.ITEM, "brown_bear_spawn_egg"))
+            )
+    );
     public static final RegistryObject<Item> BEAR_MEAT = ITEMS.register(
             "bear_meat",
             () -> new Item(new Item.Properties().food(ModFoods.BEAR_MEAT)
@@ -109,6 +124,10 @@ public class BearMinimum {
             if (event.getTabKey() == CreativeModeTabs.FOOD_AND_DRINKS) {
                 event.accept(BEAR_MEAT);
                 event.accept(COOKED_BEAR_MEAT);
+            }
+            if (event.getTabKey() == CreativeModeTabs.SPAWN_EGGS) {
+                event.accept(BLACK_BEAR_SPAWN_EGG.get());
+                event.accept(BROWN_BEAR_SPAWN_EGG.get());
             }
         }
     }

@@ -1,11 +1,11 @@
 package com.startraveler.bearminimum.entity;
 
+import com.startraveler.bearminimum.Constants;
 import com.startraveler.bearminimum.entity.goal.*;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.DamageTypeTags;
-import net.minecraft.tags.EntityTypeTags;
-import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -17,15 +17,19 @@ import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.InstrumentItem;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.biome.Biome;
 
 
 public class BrownBearEntity extends AbstractBearEntity {
+
+    public static final TagKey<Biome> HAS_BROWN_BEAR_SPAWNS = TagKey.create(Registries.BIOME, Constants.id("has_brown_bear_spawns"));
+
     public static final float PERSONAL_SPACE_DISTANCE = 4.0f;
     // Set up proper tags!
     public static final BearFoodPreferences BROWN_BEAR_FOODS = new BearFoodPreferences(
-            ItemTags.FOX_FOOD,
-            EntityTypeTags.UNDEAD,
-            BlockTags.CROPS
+            BearFoodPreferences.BROWN_BEAR_FOOD,
+            BearFoodPreferences.BROWN_BEAR_PREY,
+            BearFoodPreferences.BROWN_BEAR_FORAGE
     );
 
     public BrownBearEntity(EntityType<? extends BrownBearEntity> entityType, Level level) {
@@ -66,7 +70,7 @@ public class BrownBearEntity extends AbstractBearEntity {
                         PERSONAL_SPACE_DISTANCE * 3,
                         SCARED_BOOST,
                         SCARED_BOOST,
-                        EntitySelector.NO_CREATIVE_OR_SPECTATOR::test
+                        entity -> true
                 )
         );
         this.goalSelector.addGoal(2, new BreedGoal(this, 0.8));

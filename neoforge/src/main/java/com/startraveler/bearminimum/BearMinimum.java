@@ -12,8 +12,12 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.SpawnPlacementTypes;
+import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.SpawnEggItem;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.NestedLootTable;
@@ -24,13 +28,11 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.neoforge.client.gui.ConfigurationScreen;
-import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.LootTableLoadEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
+import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -49,7 +51,13 @@ public class BearMinimum {
                     .clientTrackingRange(10)
                     .build(Constants.key(Registries.ENTITY_TYPE, "black_bear"))
     );
-
+    public static final DeferredHolder<Item, SpawnEggItem> BLACK_BEAR_SPAWN_EGG = ITEMS.register(
+            "black_bear_spawn_egg",
+            () -> new SpawnEggItem(
+                    BLACK_BEAR.get(), new Item.Properties()
+                    .setId(Constants.key(Registries.ITEM, "black_bear_spawn_egg"))
+            )
+    );
     public static final DeferredHolder<EntityType<?>, EntityType<BrownBearEntity>> BROWN_BEAR = ENTITY_TYPES.register(
             "brown_bear",
             () -> EntityType.Builder.of(BrownBearEntity::new, MobCategory.CREATURE)
@@ -57,13 +65,17 @@ public class BearMinimum {
                     .clientTrackingRange(10)
                     .build(Constants.key(Registries.ENTITY_TYPE, "brown_bear"))
     );
-
-
+    public static final DeferredHolder<Item, SpawnEggItem> BROWN_BEAR_SPAWN_EGG = ITEMS.register(
+            "brown_bear_spawn_egg",
+            () -> new SpawnEggItem(
+                    BROWN_BEAR.get(), new Item.Properties()
+                    .setId(Constants.key(Registries.ITEM, "brown_bear_spawn_egg"))
+            )
+    );
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(
             BuiltInRegistries.ITEM,
             Constants.MOD_ID
     );
-
     public static final DeferredHolder<Item, Item> BEAR_MEAT = ITEMS.register(
             "bear_meat",
             () -> new Item(new Item.Properties().food(ModFoods.BEAR_MEAT)
@@ -100,15 +112,6 @@ public class BearMinimum {
     }
 
 
-    // Add the example block item to the building blocks tab
-    @SubscribeEvent
-    public void addCreative(BuildCreativeModeTabContentsEvent event) {
-        if (event.getTabKey() == CreativeModeTabs.FOOD_AND_DRINKS) {
-            event.accept(BEAR_MEAT.get());
-            event.accept(COOKED_BEAR_MEAT.get());
-        }
-    }
-
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
     @EventBusSubscriber(modid = Constants.MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class ClientModEventBusEvents {
@@ -125,6 +128,33 @@ public class BearMinimum {
         public static void registerAttributes(EntityAttributeCreationEvent event) {
             event.put(BearMinimum.BLACK_BEAR.get(), BlackBearEntity.createAttributes().build());
             event.put(BearMinimum.BROWN_BEAR.get(), BrownBearEntity.createAttributes().build());
+        }
+
+        @SubscribeEvent
+        public static void registerSpawnPlacements(RegisterSpawnPlacementsEvent event) {
+            event.register(
+                    BLACK_BEAR.get(), SpawnPlacementTypes.ON_GROUND,
+                    Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                    Animal::checkAnimalSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE
+            );
+            event.register(
+                    BROWN_BEAR.get(), SpawnPlacementTypes.ON_GROUND,
+                    Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                    Animal::checkAnimalSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE
+            );
+        }
+
+        // Add the example block item to the building blocks tab
+        @SubscribeEvent
+        public static void addCreative(BuildCreativeModeTabContentsEvent event) {
+            if (event.getTabKey() == CreativeModeTabs.FOOD_AND_DRINKS) {
+                event.accept(BEAR_MEAT.get());
+                event.accept(COOKED_BEAR_MEAT.get());
+            }
+            if (event.getTabKey() == CreativeModeTabs.SPAWN_EGGS) {
+                event.accept(BLACK_BEAR_SPAWN_EGG.get());
+                event.accept(BROWN_BEAR_SPAWN_EGG.get());
+            }
         }
     }
 
