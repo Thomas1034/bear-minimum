@@ -1,5 +1,6 @@
-package com.startraveler.bearminimum.entity;
+package com.startraveler.bearminimum.entity.goal;
 
+import com.startraveler.bearminimum.entity.AbstractBearEntity;
 import com.startraveler.bearminimum.mixin.CropBlockMixin;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.ai.goal.MoveToBlockGoal;

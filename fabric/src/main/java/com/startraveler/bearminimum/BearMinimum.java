@@ -1,7 +1,9 @@
 package com.startraveler.bearminimum;
 
 import com.startraveler.bearminimum.entity.BlackBearEntity;
+import com.startraveler.bearminimum.entity.BrownBearEntity;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -9,6 +11,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 
 import java.util.function.Function;
@@ -24,6 +27,15 @@ public class BearMinimum implements ModInitializer {
                     .clientTrackingRange(10)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE, Constants.id("black_bear")))
     );
+    public static final EntityType<BrownBearEntity> BROWN_BEAR = Registry.register(
+            BuiltInRegistries.ENTITY_TYPE,
+            Constants.id("brown_bear"),
+            EntityType.Builder.of(BrownBearEntity::new, MobCategory.CREATURE)
+                    .sized(1.4F, 1.4F)
+                    .clientTrackingRange(10)
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE, Constants.id("brown_bear")))
+    );
+
 
     public static final Item BEAR_MEAT = register(
             "bear_meat",
@@ -60,7 +72,13 @@ public class BearMinimum implements ModInitializer {
         Constants.LOG.info("Hello Fabric world!");
         CommonClass.init();
 
-        FabricDefaultAttributeRegistry.register(BLACK_BEAR, BlackBearEntity.createAttributes());
 
+        FabricDefaultAttributeRegistry.register(BLACK_BEAR, BlackBearEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(BROWN_BEAR, BrownBearEntity.createAttributes());
+
+        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.FOOD_AND_DRINKS).register(entries -> {
+            entries.accept(BEAR_MEAT);
+            entries.accept(COOKED_BEAR_MEAT);
+        });
     }
 }

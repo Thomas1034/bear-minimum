@@ -1,9 +1,6 @@
 package com.startraveler.bearminimum.entity;
 
-import com.startraveler.bearminimum.entity.goal.AbstractBearAttackPlayersGoal;
-import com.startraveler.bearminimum.entity.goal.AbstractBearHurtByTargetGoal;
-import com.startraveler.bearminimum.entity.goal.AbstractBearMeleeAttackGoal;
-import com.startraveler.bearminimum.entity.goal.ForageGoal;
+import com.startraveler.bearminimum.entity.goal.*;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.DamageTypeTags;
@@ -22,28 +19,26 @@ import net.minecraft.world.item.InstrumentItem;
 import net.minecraft.world.level.Level;
 
 
-public class BlackBearEntity extends AbstractBearEntity {
-    // Set up proper tags
-    // Bear food blocks: chests, barrels, all crops
-    // Bear foods: bread, honeycomb, fish, honey bottle, glow berry, sweet berry, glow berry
-    // Bear prey: rabbits, all fish
-    public static final BearFoodPreferences BLACK_BEAR_FOODS = new BearFoodPreferences(
+public class BrownBearEntity extends AbstractBearEntity {
+    public static final float PERSONAL_SPACE_DISTANCE = 4.0f;
+    // Set up proper tags!
+    public static final BearFoodPreferences BROWN_BEAR_FOODS = new BearFoodPreferences(
             ItemTags.FOX_FOOD,
             EntityTypeTags.UNDEAD,
             BlockTags.CROPS
     );
 
-    public BlackBearEntity(EntityType<? extends BlackBearEntity> entityType, Level level) {
-        super(entityType, level, BLACK_BEAR_FOODS);
+    public BrownBearEntity(EntityType<? extends BrownBearEntity> entityType, Level level) {
+        super(entityType, level, BROWN_BEAR_FOODS);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
         return Animal.createAnimalAttributes()
-                .add(Attributes.MAX_HEALTH, 30.0F)
-                .add(Attributes.FOLLOW_RANGE, 10.0F)
+                .add(Attributes.MAX_HEALTH, 50.0F)
+                .add(Attributes.FOLLOW_RANGE, 30.0F)
                 .add(Attributes.MOVEMENT_SPEED, 0.25F)
-                .add(Attributes.ATTACK_DAMAGE, 4.0F)
-                .add(Attributes.SCALE, 0.8);
+                .add(Attributes.ATTACK_DAMAGE, 6.0F)
+                .add(Attributes.SCALE, 1.0);
     }
 
     public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob parent) {
@@ -66,9 +61,9 @@ public class BlackBearEntity extends AbstractBearEntity {
                         this,
                         Player.class,
                         (entity) -> entity.isUsingItem() && entity.getUseItem().getItem() instanceof InstrumentItem,
-                        16.0F,
-                        SCARED_BOOST * SCARED_BOOST,
-                        SCARED_BOOST * SCARED_BOOST,
+                        PERSONAL_SPACE_DISTANCE * 3,
+                        SCARED_BOOST,
+                        SCARED_BOOST,
                         EntitySelector.NO_CREATIVE_OR_SPECTATOR::test
                 )
         );
@@ -78,11 +73,11 @@ public class BlackBearEntity extends AbstractBearEntity {
                 new TemptGoal(this, 0.5F, (stack) -> stack.is(this.foodPreferences.foodTag()), true)
         );
         this.goalSelector.addGoal(
-                4, new AvoidEntityGoal<>(
+                8, new AvoidEntityGoal<>(
                         this,
                         Player.class,
                         (entity) -> !this.isAngry(),
-                        4.0F,
+                        PERSONAL_SPACE_DISTANCE * 2,
                         SCARED_BOOST,
                         SCARED_BOOST,
                         EntitySelector.NO_CREATIVE_OR_SPECTATOR::test
@@ -90,11 +85,11 @@ public class BlackBearEntity extends AbstractBearEntity {
         );
 
         this.goalSelector.addGoal(
-                4, new AvoidEntityGoal<>(
+                8, new AvoidEntityGoal<>(
                         this,
                         Villager.class,
                         (entity) -> !this.isAngry(),
-                        4.0F,
+                        PERSONAL_SPACE_DISTANCE * 2,
                         SCARED_BOOST,
                         SCARED_BOOST,
                         EntitySelector.NO_CREATIVE_OR_SPECTATOR::test
@@ -103,13 +98,25 @@ public class BlackBearEntity extends AbstractBearEntity {
         this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.25F));
         this.goalSelector.addGoal(5, new RandomStrollGoal(this, 1.0F));
         this.goalSelector.addGoal(6, new ForageGoal(this));
-        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, PERSONAL_SPACE_DISTANCE * 3));
         this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new AbstractBearHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new AbstractBearAttackPlayersGoal(this));
         this.targetSelector.addGoal(
                 3,
                 new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, this::isAngryAt)
+        );
+        this.targetSelector.addGoal(
+                3,
+                new PersonalSpaceTargetGoal<>(
+                        this,
+                        Player.class,
+                        PERSONAL_SPACE_DISTANCE,
+                        10,
+                        true,
+                        false,
+                        (entity, level) -> true
+                )
         );
         this.targetSelector.addGoal(
                 4, new NearestAttackableTargetGoal<>(
