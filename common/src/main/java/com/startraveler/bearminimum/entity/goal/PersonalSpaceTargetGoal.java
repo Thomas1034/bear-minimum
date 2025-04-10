@@ -29,8 +29,11 @@ public class PersonalSpaceTargetGoal<T extends LivingEntity> extends NearestAtta
         this.attackWhenInDistance = attackWhenInDistance;
     }
 
+
     @Override
     protected double getFollowDistance() {
-        return super.getFollowDistance(); //this.attackWhenInDistance;
+        // Constants.LOG.warn("Getting follow distance");
+        return this.attackWhenInDistance;
     }
+
 }

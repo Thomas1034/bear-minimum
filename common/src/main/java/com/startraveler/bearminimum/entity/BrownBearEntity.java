@@ -38,6 +38,8 @@ public class BrownBearEntity extends AbstractBearEntity {
                 .add(Attributes.FOLLOW_RANGE, 30.0F)
                 .add(Attributes.MOVEMENT_SPEED, 0.25F)
                 .add(Attributes.ATTACK_DAMAGE, 6.0F)
+                .add(Attributes.ARMOR, 4.0F)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.25F)
                 .add(Attributes.SCALE, 1.0);
     }
 
@@ -106,18 +108,7 @@ public class BrownBearEntity extends AbstractBearEntity {
                 3,
                 new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, this::isAngryAt)
         );
-        this.targetSelector.addGoal(
-                3,
-                new PersonalSpaceTargetGoal<>(
-                        this,
-                        Player.class,
-                        PERSONAL_SPACE_DISTANCE,
-                        10,
-                        true,
-                        false,
-                        (entity, level) -> true
-                )
-        );
+
         this.targetSelector.addGoal(
                 4, new NearestAttackableTargetGoal<>(
                         this,
@@ -129,6 +120,18 @@ public class BrownBearEntity extends AbstractBearEntity {
                 )
         );
         this.targetSelector.addGoal(5, new ResetUniversalAngerTargetGoal<>(this, false));
+        this.targetSelector.addGoal(
+                7,
+                new PersonalSpaceTargetGoal<>(
+                        this,
+                        Player.class,
+                        PERSONAL_SPACE_DISTANCE,
+                        10,
+                        true,
+                        true,
+                        (entity, level) -> true
+                )
+        );
     }
 
 }

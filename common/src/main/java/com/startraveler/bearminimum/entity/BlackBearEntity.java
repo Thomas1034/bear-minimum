@@ -43,6 +43,7 @@ public class BlackBearEntity extends AbstractBearEntity {
                 .add(Attributes.FOLLOW_RANGE, 10.0F)
                 .add(Attributes.MOVEMENT_SPEED, 0.25F)
                 .add(Attributes.ATTACK_DAMAGE, 4.0F)
+                .add(Attributes.ARMOR, 4.0F)
                 .add(Attributes.SCALE, 0.8);
     }
 
@@ -51,7 +52,7 @@ public class BlackBearEntity extends AbstractBearEntity {
     }
 
     protected void registerGoals() {
-        super.registerGoals();
+        // super.registerGoals();
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new AbstractBearMeleeAttackGoal(this));
         this.goalSelector.addGoal(
@@ -72,7 +73,7 @@ public class BlackBearEntity extends AbstractBearEntity {
                         EntitySelector.NO_CREATIVE_OR_SPECTATOR::test
                 )
         );
-        this.goalSelector.addGoal(2, new BreedGoal(this, 0.8));
+        this.goalSelector.addGoal(2, new BreedGoal(this, 1 / SCARED_BOOST));
         this.goalSelector.addGoal(
                 3,
                 new TemptGoal(this, 0.5F, (stack) -> stack.is(this.foodPreferences.foodTag()), true)

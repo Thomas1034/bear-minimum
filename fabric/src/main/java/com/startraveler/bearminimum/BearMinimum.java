@@ -4,20 +4,27 @@ import com.startraveler.bearminimum.entity.BlackBearEntity;
 import com.startraveler.bearminimum.entity.BrownBearEntity;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
+import net.fabricmc.fabric.api.loot.v3.LootTableSource;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.NestedLootTable;
+import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 
 import java.util.function.Function;
 
 public class BearMinimum implements ModInitializer {
-
 
     public static final EntityType<BlackBearEntity> BLACK_BEAR = Registry.register(
             BuiltInRegistries.ENTITY_TYPE,
@@ -35,8 +42,6 @@ public class BearMinimum implements ModInitializer {
                     .clientTrackingRange(10)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE, Constants.id("brown_bear")))
     );
-
-
     public static final Item BEAR_MEAT = register(
             "bear_meat",
             Item::new,
@@ -46,6 +51,14 @@ public class BearMinimum implements ModInitializer {
             "cooked_bear_meat",
             Item::new,
             new Item.Properties().food(ModFoods.COOKED_BEAR_MEAT)
+    );
+    private static final ResourceKey<LootTable> POLAR_BEAR_LOOT_TABLE_ID = ResourceKey.create(
+            Registries.LOOT_TABLE,
+            ResourceLocation.withDefaultNamespace("entities/polar_bear")
+    );
+    private static final ResourceKey<LootTable> MODIFIED_POLAR_BEAR_LOOT_TABLE_ID = Constants.key(
+            Registries.LOOT_TABLE,
+            "entities/polar_bear"
     );
 
     public static Item register(String name, Function<Item.Properties, Item> itemFactory, Item.Properties settings) {
@@ -79,6 +92,17 @@ public class BearMinimum implements ModInitializer {
         ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.FOOD_AND_DRINKS).register(entries -> {
             entries.accept(BEAR_MEAT);
             entries.accept(COOKED_BEAR_MEAT);
+        });
+
+
+        LootTableEvents.MODIFY.register((ResourceKey<LootTable> id, LootTable.Builder builder, LootTableSource source, HolderLookup.Provider holderLookupProvider) -> {
+            if (POLAR_BEAR_LOOT_TABLE_ID.equals(id)) {
+                LootPool customPool = LootPool.lootPool()
+                        .setRolls(ConstantValue.exactly(1))
+                        .add(NestedLootTable.lootTableReference(MODIFIED_POLAR_BEAR_LOOT_TABLE_ID))
+                        .build();
+                builder.pool(customPool);
+            }
         });
     }
 }
