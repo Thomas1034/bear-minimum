@@ -50,18 +50,6 @@ public abstract class PolarBearMixin {
     public void bearminimum$addGoals(CallbackInfo ci) {
         PolarBear thisBear = (PolarBear) (Object) this;
         // is my bear, this bear is your bear...
-
-        ((MobMixin) thisBear).getGoalSelector().addGoal(
-                2, new AvoidEntityGoal<>(
-                        thisBear,
-                        Player.class,
-                        (entity) -> entity.isUsingItem() && entity.getUseItem().getItem() instanceof InstrumentItem,
-                        bearminimum$PERSONAL_SPACE_DISTANCE * 3,
-                        AbstractBearEntity.SCARED_BOOST,
-                        AbstractBearEntity.SCARED_BOOST,
-                        entity -> true
-                )
-        );
         ((MobMixin) thisBear).getGoalSelector().addGoal(5, new BreedGoal(thisBear, 0.8));
         ((MobMixin) thisBear).getGoalSelector().addGoal(
                 8, new AvoidEntityGoal<>(

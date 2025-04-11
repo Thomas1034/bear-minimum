@@ -51,13 +51,6 @@ public class BearMinimum {
                     .clientTrackingRange(10)
                     .build(Constants.key(Registries.ENTITY_TYPE, "black_bear"))
     );
-    public static final DeferredHolder<Item, SpawnEggItem> BLACK_BEAR_SPAWN_EGG = ITEMS.register(
-            "black_bear_spawn_egg",
-            () -> new SpawnEggItem(
-                    BLACK_BEAR.get(), new Item.Properties()
-                    .setId(Constants.key(Registries.ITEM, "black_bear_spawn_egg"))
-            )
-    );
     public static final DeferredHolder<EntityType<?>, EntityType<BrownBearEntity>> BROWN_BEAR = ENTITY_TYPES.register(
             "brown_bear",
             () -> EntityType.Builder.of(BrownBearEntity::new, MobCategory.CREATURE)
@@ -65,16 +58,23 @@ public class BearMinimum {
                     .clientTrackingRange(10)
                     .build(Constants.key(Registries.ENTITY_TYPE, "brown_bear"))
     );
+    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(
+            BuiltInRegistries.ITEM,
+            Constants.MOD_ID
+    );
+    public static final DeferredHolder<Item, SpawnEggItem> BLACK_BEAR_SPAWN_EGG = ITEMS.register(
+            "black_bear_spawn_egg",
+            () -> new SpawnEggItem(
+                    BLACK_BEAR.get(), new Item.Properties()
+                    .setId(Constants.key(Registries.ITEM, "black_bear_spawn_egg"))
+            )
+    );
     public static final DeferredHolder<Item, SpawnEggItem> BROWN_BEAR_SPAWN_EGG = ITEMS.register(
             "brown_bear_spawn_egg",
             () -> new SpawnEggItem(
                     BROWN_BEAR.get(), new Item.Properties()
                     .setId(Constants.key(Registries.ITEM, "brown_bear_spawn_egg"))
             )
-    );
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(
-            BuiltInRegistries.ITEM,
-            Constants.MOD_ID
     );
     public static final DeferredHolder<Item, Item> BEAR_MEAT = ITEMS.register(
             "bear_meat",
