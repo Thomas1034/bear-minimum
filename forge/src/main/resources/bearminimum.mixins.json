@@ -7,11 +7,13 @@
     "CropBlockMixin",
     "MobMixin",
     "PolarBearMixin",
-    "PolarBearRendererMixin"
+    "PolarBearRendererMixin",
+    "LootTableMixin"
   ],
   "client": [],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "refmap": "bearminimum.mixins.refmap.json"
 }
   

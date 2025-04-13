@@ -1,0 +1,134 @@
+package com.startraveler.bearminimum.entity;
+
+import com.startraveler.bearminimum.Constants;
+import com.startraveler.bearminimum.entity.goal.*;
+import net.minecraft.core.Registry;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.ResetUniversalAngerTargetGoal;
+import net.minecraft.world.entity.npc.Villager;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.InstrumentItem;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.biome.Biome;
+
+
+public class BlackBearEntity extends AbstractBearEntity {
+    public static final TagKey<Biome> HAS_BLACK_BEAR_SPAWNS = TagKey.create(
+            Registry.BIOME_REGISTRY,
+            Constants.id("has_black_bear_spawns")
+    );
+    public static final BearFoodPreferences BLACK_BEAR_FOODS = new BearFoodPreferences(
+            BearFoodPreferences.BLACK_BEAR_FOOD,
+            BearFoodPreferences.BLACK_BEAR_PREY,
+            BearFoodPreferences.BLACK_BEAR_FORAGE
+    );
+
+    static {
+        AbstractBearEntity.FOOD_PREFERENCES_MAP.put(BlackBearEntity.class, BlackBearEntity.BLACK_BEAR_FOODS);
+    }
+
+    public BlackBearEntity(EntityType<? extends BlackBearEntity> entityType, Level level) {
+        super(entityType, level, BLACK_BEAR_FOODS);
+
+    }
+
+    public static AttributeSupplier.Builder createAttributes() {
+        return Mob.createMobAttributes()
+                .add(Attributes.MAX_HEALTH, 30.0F)
+                .add(Attributes.FOLLOW_RANGE, 10.0F)
+                .add(Attributes.MOVEMENT_SPEED, 0.25F)
+                .add(Attributes.ATTACK_DAMAGE, 4.0F)
+                .add(Attributes.ARMOR, 4.0F);
+        // TODO FIX THE SCALE SOMEHOW.
+
+    }
+
+    public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob parent) {
+        return (AgeableMob) this.getType().create(level);
+    }
+
+    protected void registerGoals() {
+        // super.registerGoals();
+        this.goalSelector.addGoal(0, new FloatGoal(this));
+        this.goalSelector.addGoal(1, new AbstractBearMeleeAttackGoal(this));
+        this.goalSelector.addGoal(1, new AbstractBearPanicGoal(this, SCARED_BOOST));
+        this.goalSelector.addGoal(
+                2, new AvoidEntityGoal<>(
+                        this,
+                        Player.class,
+                        (entity) -> entity.isUsingItem() && entity.getUseItem().getItem() instanceof InstrumentItem,
+                        16.0F,
+                        SCARED_BOOST * SCARED_BOOST,
+                        SCARED_BOOST * SCARED_BOOST,
+                        entity -> true
+                )
+        );
+        this.goalSelector.addGoal(2, new BreedGoal(this, 1 / SCARED_BOOST));
+        this.goalSelector.addGoal(
+                3, new TemptGoal(
+                        this,
+                        0.5F,
+                        Ingredient.of((this.foodPreferences == null ? FOOD_PREFERENCES_MAP.get(this.getClass()) : this.foodPreferences).foodTag()),
+                        true
+                )
+        );
+        this.goalSelector.addGoal(
+                4, new AvoidEntityGoal<>(
+                        this,
+                        Player.class,
+                        (entity) -> !this.isAngry(),
+                        4.0F,
+                        SCARED_BOOST,
+                        SCARED_BOOST,
+                        EntitySelector.NO_CREATIVE_OR_SPECTATOR::test
+                )
+        );
+
+        this.goalSelector.addGoal(
+                4, new AvoidEntityGoal<>(
+                        this,
+                        Villager.class,
+                        (entity) -> !this.isAngry(),
+                        4.0F,
+                        SCARED_BOOST,
+                        SCARED_BOOST,
+                        EntitySelector.NO_CREATIVE_OR_SPECTATOR::test
+                )
+        );
+        this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.25F));
+        this.goalSelector.addGoal(5, new RandomStrollGoal(this, 1.0F));
+        this.goalSelector.addGoal(6, new ForageGoal(this));
+        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
+        this.targetSelector.addGoal(1, new AbstractBearHurtByTargetGoal(this));
+        this.targetSelector.addGoal(2, new AbstractBearAttackPlayersGoal(this));
+        this.targetSelector.addGoal(
+                3,
+                new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, this::isAngryAt)
+        );
+        this.targetSelector.addGoal(
+                4, new NearestAttackableTargetGoal<>(
+                        this,
+                        Mob.class,
+                        10,
+                        true,
+                        true,
+                        (entity) -> this.wantsMoreFood() && entity.getType()
+                                .is((this.foodPreferences == null ? FOOD_PREFERENCES_MAP.get(this.getClass()) : this.foodPreferences).preyTag())
+                )
+        );
+        this.targetSelector.addGoal(5, new ResetUniversalAngerTargetGoal<>(this, false));
+    }
+
+
+}
