@@ -4,7 +4,6 @@ import com.startraveler.bearminimum.client.BlackBearRenderer;
 import com.startraveler.bearminimum.client.BrownBearRenderer;
 import com.startraveler.bearminimum.entity.BlackBearEntity;
 import com.startraveler.bearminimum.entity.BrownBearEntity;
-import com.startraveler.bearminimum.mixin.LootTableMixin;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
@@ -12,7 +11,7 @@ import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.storage.loot.LootPool;
-import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.LootTableReference;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.event.LootTableLoadEvent;
@@ -36,7 +35,7 @@ public class BearMinimum {
     public static final RegistryObject<EntityType<BlackBearEntity>> BLACK_BEAR = ENTITY_TYPES.register(
             "black_bear",
             () -> EntityType.Builder.of(BlackBearEntity::new, MobCategory.CREATURE)
-                    .sized(1.4F, 1.4F)
+                    .sized(1.4F*0.8F, 1.4F*0.8F)
                     .clientTrackingRange(10)
                     .build("black_bear")
     );
@@ -45,7 +44,7 @@ public class BearMinimum {
             "black_bear_spawn_egg",
             () -> new ForgeSpawnEggItem(
                     () -> BLACK_BEAR.get(),
-                    0x0,
+                    0x161619,
                     0x0,
                     new Item.Properties().tab(CreativeModeTab.TAB_MISC)
             )
@@ -54,17 +53,17 @@ public class BearMinimum {
             "bear_meat",
             () -> new Item(new Item.Properties().food(ModFoods.BEAR_MEAT).tab(CreativeModeTab.TAB_FOOD))
     );
-    public static final RegistryObject<EntityType<BlackBearEntity>> BROWN_BEAR = ENTITY_TYPES.register(
+    public static final RegistryObject<EntityType<BrownBearEntity>> BROWN_BEAR = ENTITY_TYPES.register(
             "brown_bear",
-            () -> EntityType.Builder.of(BlackBearEntity::new, MobCategory.CREATURE)
-                    .sized(1.4F * 0.8F, 1.4F * 0.8F)
+            () -> EntityType.Builder.of(BrownBearEntity::new, MobCategory.CREATURE)
+                    .sized(1.4F, 1.4F)
                     .clientTrackingRange(10)
                     .build("brown_bear")
     );
     public static final RegistryObject<Item> BROWN_BEAR_SPAWN_EGG = ITEMS.register(
             "brown_bear_spawn_egg", () -> new ForgeSpawnEggItem(
                     () -> BROWN_BEAR.get(),
-                    0x0, 0x0,
+                    0x573525, 0x382417,
                     new Item.Properties().tab(CreativeModeTab.TAB_MISC)
             )
     );
@@ -95,14 +94,19 @@ public class BearMinimum {
 
     }
 
-    @SubscribeEvent
-    public static void onLootTableLoad(LootTableLoadEvent event) {
-        ResourceLocation tableName = event.getName();
+    // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
+    @Mod.EventBusSubscriber(modid = Constants.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+    public static class ForgeEventBusEvents {
 
-        if (tableName.equals(POLAR_BEAR_LOOT_TABLE_ID)) {
-            LootTable newTable = event.getLootTableManager().get(MODIFIED_POLAR_BEAR_LOOT_TABLE_ID);
-            for (LootPool pool : ((LootTableMixin) newTable).getPools()) {
-                event.getTable().addPool(pool);
+        @SubscribeEvent
+        public static void onLootTableLoad(LootTableLoadEvent event) {
+            ResourceLocation tableName = event.getName();
+
+            if (tableName.equals(POLAR_BEAR_LOOT_TABLE_ID)) {
+                LootPool nestedTablePool = LootPool.lootPool()
+                        .add(LootTableReference.lootTableReference(MODIFIED_POLAR_BEAR_LOOT_TABLE_ID))
+                        .build();
+                event.getTable().addPool(nestedTablePool);
             }
         }
     }

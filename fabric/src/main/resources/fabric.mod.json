@@ -1,33 +1,32 @@
 {
     "schemaVersion": 1,
-    "id": "modid",
+    "id": "bearminimum",
     "version": "${version}",
   
-    "name": "Example Mod",
-    "description": "This is an example description! Tell everyone what your mod is about!",
+    "name": "Bear Minimum",
+    "description": "A minimal mod that adds more bear varieties and rebalances polar bears.",
     "authors": [
-      "Me!"
+      "Startraveler"
     ],
-    "contact": {
-      "homepage": "https://fabricmc.net/",
-      "sources": "https://github.com/FabricMC/fabric-example-mod"
-    },
   
-    "license": "CC0-1.0",
-    "icon": "assets/modid/icon.png",
+    "license": "Apache 2.0",
+    "icon": "assets/bearminimum/icon.png",
   
     "environment": "*",
     "entrypoints": {
       "main": [
-        "com.example.examplemod.ExampleMod"
+        "com.startraveler.bearminimum.BearMinimum"
+      ],
+      "client": [
+        "com.startraveler.bearminimum.BearMinimumClient"
       ]
     },
     "mixins": [
-      "modid.mixins.json"
+      "bearminimum.mixins.json"
     ],
   
     "depends": {
-      "fabricloader": ">=0.14",
+      "fabricloader": ">=0.14.25",
       "fabric": "*",
       "minecraft": "1.19.x",
       "java": ">=17"

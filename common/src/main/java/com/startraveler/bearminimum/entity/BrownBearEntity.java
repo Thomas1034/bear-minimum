@@ -58,7 +58,7 @@ public class BrownBearEntity extends AbstractBearEntity {
     }
 
     protected void registerGoals() {
-        super.registerGoals();
+        // super.registerGoals();
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new AbstractBearMeleeAttackGoal(this));
         this.goalSelector.addGoal(1, new AbstractBearPanicGoal(this, SCARED_BOOST));
@@ -127,7 +127,7 @@ public class BrownBearEntity extends AbstractBearEntity {
         );
         this.targetSelector.addGoal(5, new ResetUniversalAngerTargetGoal<>(this, false));
         this.targetSelector.addGoal(
-                7,
+                5,
                 new PersonalSpaceTargetGoal<>(
                         this,
                         Player.class,

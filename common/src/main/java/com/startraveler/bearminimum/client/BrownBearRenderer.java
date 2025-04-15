@@ -1,11 +1,14 @@
 package com.startraveler.bearminimum.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.startraveler.bearminimum.Constants;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.PolarBearRenderer;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.animal.PolarBear;
 
 public class BrownBearRenderer extends PolarBearRenderer {
+    private static final ResourceLocation BEAR_LOCATION = Constants.id("textures/entity/bear/brown_bear.png");
 
     public BrownBearRenderer(EntityRendererProvider.Context $$0) {
         super($$0);
@@ -16,4 +19,8 @@ public class BrownBearRenderer extends PolarBearRenderer {
         $$1.scale(1/1.2F, 1/1.2F, 1/1.2F);
         super.scale($$0, $$1, $$2);
     }
+    public ResourceLocation getTextureLocation(PolarBear $$0) {
+        return BrownBearRenderer.BEAR_LOCATION;
+    }
+
 }

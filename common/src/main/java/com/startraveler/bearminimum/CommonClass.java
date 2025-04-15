@@ -17,8 +17,8 @@ public class CommonClass {
     // invoked from a mod loader specific project like Forge or Fabric.
     public static void init() {
 
-        Constants.LOG.info("Hello from Common init on {}! we are currently in a {} environment!", Services.PLATFORM.getPlatformName(), Services.PLATFORM.isDevelopmentEnvironment() ? "development" : "production");
-        Constants.LOG.info("Diamond Item >> {}", Registry.ITEM.getKey(Items.DIAMOND));
+        // .LOG.info("Hello from Common init on {}! we are currently in a {} environment!", Services.PLATFORM.getPlatformName(), Services.PLATFORM.isDevelopmentEnvironment() ? "development" : "production");
+        // Constants.LOG.info("Diamond Item >> {}", Registry.ITEM.getKey(Items.DIAMOND));
     }
 
     // This method serves as a hook to modify item tooltips. The vanilla game
@@ -32,8 +32,8 @@ public class CommonClass {
 
             if (food != null) {
 
-                tooltip.add(Component.literal("Nutrition: " + food.getNutrition()));
-                tooltip.add(Component.literal("Saturation: " + food.getSaturationModifier()));
+                // tooltip.add(Component.literal("Nutrition: " + food.getNutrition()));
+                // tooltip.add(Component.literal("Saturation: " + food.getSaturationModifier()));
             }
         }
     }
