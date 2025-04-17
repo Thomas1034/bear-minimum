@@ -1,8 +1,6 @@
 package com.startraveler.bearminimum.entity;
 
 
-import com.startraveler.bearminimum.Constants;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
@@ -42,7 +40,11 @@ public abstract class AbstractBearEntity extends PolarBear {
 
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
-        this.eatCropAgainTicks = compound.getIntOr(EAT_CROP_AGAIN_TICKS_ID, 0);
+        this.eatCropAgainTicks = 0;
+        if (compound.contains(EAT_CROP_AGAIN_TICKS_ID)) {
+
+            this.eatCropAgainTicks = compound.getInt(EAT_CROP_AGAIN_TICKS_ID);
+        }
     }
 
     public void addAdditionalSaveData(CompoundTag compound) {

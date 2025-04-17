@@ -43,9 +43,9 @@ public class BearMinimum {
                     .clientTrackingRange(10)
                     .build(Constants.key(Registries.ENTITY_TYPE, "black_bear"))
     );
-    public static final RegistryObject<EntityType<BlackBearEntity>> BROWN_BEAR = ENTITY_TYPES.register(
+    public static final RegistryObject<EntityType<BrownBearEntity>> BROWN_BEAR = ENTITY_TYPES.register(
             "brown_bear",
-            () -> EntityType.Builder.of(BlackBearEntity::new, MobCategory.CREATURE)
+            () -> EntityType.Builder.of(BrownBearEntity::new, MobCategory.CREATURE)
                     .sized(1.4F, 1.4F)
                     .clientTrackingRange(10)
                     .build(Constants.key(Registries.ENTITY_TYPE, "brown_bear"))

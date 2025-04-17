@@ -25,7 +25,10 @@ import net.minecraft.world.level.biome.Biome;
 
 public class BlackBearEntity extends AbstractBearEntity {
 
-    public static final TagKey<Biome> HAS_BLACK_BEAR_SPAWNS = TagKey.create(Registries.BIOME, Constants.id("has_black_bear_spawns"));
+    public static final TagKey<Biome> HAS_BLACK_BEAR_SPAWNS = TagKey.create(
+            Registries.BIOME,
+            Constants.id("has_black_bear_spawns")
+    );
 
     public static final BearFoodPreferences BLACK_BEAR_FOODS = new BearFoodPreferences(
             BearFoodPreferences.BLACK_BEAR_FOOD,
@@ -124,7 +127,5 @@ public class BlackBearEntity extends AbstractBearEntity {
         );
         this.targetSelector.addGoal(5, new ResetUniversalAngerTargetGoal<>(this, false));
     }
-
-
 
 }
