@@ -11,19 +11,15 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SpawnEggItem;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.FlowerPotBlock;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.NestedLootTable;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
@@ -50,9 +46,9 @@ public class BearMinimum {
                     .clientTrackingRange(10)
                     .build(Constants.key(Registries.ENTITY_TYPE, "black_bear"))
     );
-    public static final RegistryObject<EntityType<BlackBearEntity>> BROWN_BEAR = ENTITY_TYPES.register(
+    public static final RegistryObject<EntityType<BrownBearEntity>> BROWN_BEAR = ENTITY_TYPES.register(
             "brown_bear",
-            () -> EntityType.Builder.of(BlackBearEntity::new, MobCategory.CREATURE)
+            () -> EntityType.Builder.of(BrownBearEntity::new, MobCategory.CREATURE)
                     .sized(1.4F, 1.4F)
                     .clientTrackingRange(10)
                     .build(Constants.key(Registries.ENTITY_TYPE, "brown_bear"))
@@ -110,14 +106,18 @@ public class BearMinimum {
 
     private void commonSetup(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
-            SpawnPlacements.register(BLACK_BEAR.get(),
+            SpawnPlacements.register(
+                    BLACK_BEAR.get(),
                     SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                    Animal::checkAnimalSpawnRules);
+                    Animal::checkAnimalSpawnRules
+            );
         });
         event.enqueueWork(() -> {
-            SpawnPlacements.register(BROWN_BEAR.get(),
+            SpawnPlacements.register(
+                    BROWN_BEAR.get(),
                     SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                    Animal::checkAnimalSpawnRules);
+                    Animal::checkAnimalSpawnRules
+            );
         });
     }
 
