@@ -29,7 +29,6 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.LootTableLoadEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
@@ -110,21 +109,6 @@ public class BearMinimum {
 
         ITEMS.register(modBus);
         ENTITY_TYPES.register(modBus);
-
-        modBus.addListener(this::commonSetup);
-    }
-
-    private void commonSetup(final FMLCommonSetupEvent event) {
-        event.enqueueWork(() -> {
-            SpawnPlacements.register(BLACK_BEAR.get(),
-                    SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                    Animal::checkAnimalSpawnRules);
-        });
-        event.enqueueWork(() -> {
-            SpawnPlacements.register(BROWN_BEAR.get(),
-                    SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                    Animal::checkAnimalSpawnRules);
-        });
     }
 
 
@@ -140,6 +124,7 @@ public class BearMinimum {
 
     @EventBusSubscriber(modid = Constants.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
     public static class ModEventBusEvents {
+
         @SubscribeEvent
         public static void registerAttributes(EntityAttributeCreationEvent event) {
             event.put(BearMinimum.BLACK_BEAR.get(), BlackBearEntity.createAttributes().build());

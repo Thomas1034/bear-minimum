@@ -10,6 +10,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
@@ -23,11 +24,11 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
+import net.minecraftforge.event.entity.SpawnPlacementRegisterEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -101,24 +102,6 @@ public class BearMinimum {
         ITEMS.register(modBus);
         ENTITY_TYPES.register(modBus);
 
-        modBus.addListener(this::commonSetup);
-    }
-
-    private void commonSetup(final FMLCommonSetupEvent event) {
-        event.enqueueWork(() -> {
-            SpawnPlacements.register(
-                    BLACK_BEAR.get(),
-                    SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                    Animal::checkAnimalSpawnRules
-            );
-        });
-        event.enqueueWork(() -> {
-            SpawnPlacements.register(
-                    BROWN_BEAR.get(),
-                    SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                    Animal::checkAnimalSpawnRules
-            );
-        });
     }
 
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
@@ -133,6 +116,21 @@ public class BearMinimum {
 
     @Mod.EventBusSubscriber(modid = Constants.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class ModEventBusEvents {
+
+        @SubscribeEvent
+        public static void registerSpawnPlacements(SpawnPlacementRegisterEvent event) {
+            event.register(
+                    BROWN_BEAR.get(),
+                    SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                    Animal::checkAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.REPLACE
+            );
+            event.register(
+                    BLACK_BEAR.get(),
+                    SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                    Animal::checkAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.REPLACE
+            );
+        }
+
         @SubscribeEvent
         public static void registerAttributes(EntityAttributeCreationEvent event) {
             event.put(BearMinimum.BLACK_BEAR.get(), BlackBearEntity.createAttributes().build());
@@ -140,7 +138,7 @@ public class BearMinimum {
         }
 
         @SubscribeEvent
-        public void addCreative(BuildCreativeModeTabContentsEvent event) {
+        public static void addCreative(BuildCreativeModeTabContentsEvent event) {
             if (event.getTabKey() == CreativeModeTabs.FOOD_AND_DRINKS) {
                 event.accept(BEAR_MEAT);
                 event.accept(COOKED_BEAR_MEAT);
@@ -150,10 +148,12 @@ public class BearMinimum {
                 event.accept(BROWN_BEAR_SPAWN_EGG.get());
             }
         }
+
     }
 
     @Mod.EventBusSubscriber(modid = Constants.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
     public static class ForgeEventBusEvents {
+
         @SubscribeEvent
         public static void onLootTableLoad(LootTableLoadEvent event) {
             ResourceLocation tableName = event.getName();
