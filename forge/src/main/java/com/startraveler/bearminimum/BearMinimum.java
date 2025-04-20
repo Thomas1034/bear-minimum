@@ -120,7 +120,7 @@ public class BearMinimum {
         }
 
         @SubscribeEvent
-        public void addCreative(BuildCreativeModeTabContentsEvent event) {
+        public static void addCreative(BuildCreativeModeTabContentsEvent event) {
             if (event.getTabKey() == CreativeModeTabs.FOOD_AND_DRINKS) {
                 event.accept(BEAR_MEAT);
                 event.accept(COOKED_BEAR_MEAT);
