@@ -37,7 +37,7 @@ public class BlackBearEntity extends AbstractBearEntity {
     );
 
     public BlackBearEntity(EntityType<? extends BlackBearEntity> entityType, Level level) {
-        super(entityType, level, BLACK_BEAR_FOODS);
+        super(entityType, level);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -79,7 +79,7 @@ public class BlackBearEntity extends AbstractBearEntity {
         this.goalSelector.addGoal(2, new BreedGoal(this, 1 / SCARED_BOOST));
         this.goalSelector.addGoal(
                 3,
-                new TemptGoal(this, 0.5F, (stack) -> stack.is(this.foodPreferences.foodTag()), true)
+                new TemptGoal(this, 0.5F, (stack) -> stack.is(this.getFoodPreferences().foodTag()), true)
         );
         this.goalSelector.addGoal(
                 4, new AvoidEntityGoal<>(
@@ -122,10 +122,14 @@ public class BlackBearEntity extends AbstractBearEntity {
                         10,
                         true,
                         true,
-                        (entity, level) -> this.wantsMoreFood() && entity.getType().is(this.foodPreferences.preyTag())
+                        (entity, level) -> this.wantsMoreFood() && entity.getType().is(this.getFoodPreferences().preyTag())
                 )
         );
         this.targetSelector.addGoal(5, new ResetUniversalAngerTargetGoal<>(this, false));
     }
 
+    @Override
+    public BearFoodPreferences getFoodPreferences() {
+        return BLACK_BEAR_FOODS;
+    }
 }
