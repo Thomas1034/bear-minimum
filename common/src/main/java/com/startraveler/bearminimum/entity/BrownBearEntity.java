@@ -35,12 +35,8 @@ public class BrownBearEntity extends AbstractBearEntity {
             BearFoodPreferences.BROWN_BEAR_FORAGE
     );
 
-    static {
-        AbstractBearEntity.FOOD_PREFERENCES_MAP.put(BrownBearEntity.class, BrownBearEntity.BROWN_BEAR_FOODS);
-    }
-
     public BrownBearEntity(EntityType<? extends BrownBearEntity> entityType, Level level) {
-        super(entityType, level, BROWN_BEAR_FOODS);
+        super(entityType, level);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -58,7 +54,7 @@ public class BrownBearEntity extends AbstractBearEntity {
     }
 
     protected void registerGoals() {
-        // super.registerGoals();
+        super.registerGoals();
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new AbstractBearMeleeAttackGoal(this));
         this.goalSelector.addGoal(1, new AbstractBearPanicGoal(this, SCARED_BOOST));
@@ -76,8 +72,7 @@ public class BrownBearEntity extends AbstractBearEntity {
         this.goalSelector.addGoal(2, new BreedGoal(this, 0.8));
         this.goalSelector.addGoal(
                 3,
-                new TemptGoal(this, 0.5F, Ingredient.of((this.foodPreferences == null ? FOOD_PREFERENCES_MAP.get(
-                        this.getClass()) : this.foodPreferences).foodTag()), true)
+                new TemptGoal(this, 0.5F, Ingredient.of(this.getFoodPreferences().foodTag()), true)
         );
         this.goalSelector.addGoal(
                 8, new AvoidEntityGoal<>(
@@ -121,8 +116,7 @@ public class BrownBearEntity extends AbstractBearEntity {
                         10,
                         true,
                         true,
-                        (entity) -> this.wantsMoreFood() && entity.getType().is((this.foodPreferences == null ? FOOD_PREFERENCES_MAP.get(
-                                this.getClass()) : this.foodPreferences).preyTag())
+                        (entity) -> this.wantsMoreFood() && entity.getType().is(this.getFoodPreferences().preyTag())
                 )
         );
         this.targetSelector.addGoal(5, new ResetUniversalAngerTargetGoal<>(this, false));
@@ -140,4 +134,8 @@ public class BrownBearEntity extends AbstractBearEntity {
         );
     }
 
+    @Override
+    public BearFoodPreferences getFoodPreferences() {
+        return BrownBearEntity.BROWN_BEAR_FOODS;
+    }
 }

@@ -33,12 +33,8 @@ public class BlackBearEntity extends AbstractBearEntity {
             BearFoodPreferences.BLACK_BEAR_FORAGE
     );
 
-    static {
-        AbstractBearEntity.FOOD_PREFERENCES_MAP.put(BlackBearEntity.class, BlackBearEntity.BLACK_BEAR_FOODS);
-    }
-
     public BlackBearEntity(EntityType<? extends BlackBearEntity> entityType, Level level) {
-        super(entityType, level, BLACK_BEAR_FOODS);
+        super(entityType, level);
 
     }
 
@@ -58,7 +54,7 @@ public class BlackBearEntity extends AbstractBearEntity {
     }
 
     protected void registerGoals() {
-        // super.registerGoals();
+        super.registerGoals();
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new AbstractBearMeleeAttackGoal(this));
         this.goalSelector.addGoal(1, new AbstractBearPanicGoal(this, SCARED_BOOST));
@@ -75,12 +71,8 @@ public class BlackBearEntity extends AbstractBearEntity {
         );
         this.goalSelector.addGoal(2, new BreedGoal(this, 1 / SCARED_BOOST));
         this.goalSelector.addGoal(
-                3, new TemptGoal(
-                        this,
-                        0.5F,
-                        Ingredient.of((this.foodPreferences == null ? FOOD_PREFERENCES_MAP.get(this.getClass()) : this.foodPreferences).foodTag()),
-                        true
-                )
+                3,
+                new TemptGoal(this, 0.5F, Ingredient.of(this.getFoodPreferences().foodTag()), true)
         );
         this.goalSelector.addGoal(
                 4, new AvoidEntityGoal<>(
@@ -123,12 +115,15 @@ public class BlackBearEntity extends AbstractBearEntity {
                         10,
                         true,
                         true,
-                        (entity) -> this.wantsMoreFood() && entity.getType()
-                                .is((this.foodPreferences == null ? FOOD_PREFERENCES_MAP.get(this.getClass()) : this.foodPreferences).preyTag())
+                        (entity) -> this.wantsMoreFood() && entity.getType().is(this.getFoodPreferences().preyTag())
                 )
         );
         this.targetSelector.addGoal(5, new ResetUniversalAngerTargetGoal<>(this, false));
     }
 
 
+    @Override
+    public BearFoodPreferences getFoodPreferences() {
+        return BlackBearEntity.BLACK_BEAR_FOODS;
+    }
 }

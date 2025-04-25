@@ -10,11 +10,8 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.FlowerPotBlock;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.entries.LootTableReference;
@@ -41,7 +38,7 @@ public class BearMinimum {
     public static final RegistryObject<EntityType<BlackBearEntity>> BLACK_BEAR = ENTITY_TYPES.register(
             "black_bear",
             () -> EntityType.Builder.of(BlackBearEntity::new, MobCategory.CREATURE)
-                    .sized(1.4F*0.8F, 1.4F*0.8F)
+                    .sized(1.4F * 0.8F, 1.4F * 0.8F)
                     .clientTrackingRange(10)
                     .build("black_bear")
     );
@@ -103,13 +100,16 @@ public class BearMinimum {
 
     private void commonSetup(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
-            SpawnPlacements.register(BLACK_BEAR.get(),
+            SpawnPlacements.register(
+                    BLACK_BEAR.get(),
                     SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                    Animal::checkAnimalSpawnRules);
-            SpawnPlacements.register(BROWN_BEAR.get(),
+                    Animal::checkAnimalSpawnRules
+            );
+            SpawnPlacements.register(
+                    BROWN_BEAR.get(),
                     SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                    Animal::checkAnimalSpawnRules);
-
+                    Animal::checkAnimalSpawnRules
+            );
         });
     }
 

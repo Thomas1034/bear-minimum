@@ -13,17 +13,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class AbstractBearEntity extends PolarBear {
-    public static final Map<Class<? extends AbstractBearEntity>, BearFoodPreferences> FOOD_PREFERENCES_MAP = new HashMap<>();
 
     public static final float SCARED_BOOST = 1.5f;
     public static final Integer TICKS_TILL_HUNGRY_AGAIN = 40;
     public static final String EAT_CROP_AGAIN_TICKS_ID = "EatCropsAgainTicks";
-    public final BearFoodPreferences foodPreferences;
     public int eatCropAgainTicks = 0;
 
-    public AbstractBearEntity(EntityType<? extends AbstractBearEntity> entityType, Level level, BearFoodPreferences foodPreferences) {
+    public AbstractBearEntity(EntityType<? extends AbstractBearEntity> entityType, Level level) {
         super(entityType, level);
-        this.foodPreferences = foodPreferences;
     }
 
     @Override
@@ -31,8 +28,11 @@ public abstract class AbstractBearEntity extends PolarBear {
         return !this.isAngry();
     }
 
+    public abstract BearFoodPreferences getFoodPreferences();
+
+    @Override
     public boolean isFood(ItemStack stack) {
-        return stack.is(this.foodPreferences.foodTag());
+        return stack.is(this.getFoodPreferences().foodTag());
     }
 
     public void readAdditionalSaveData(CompoundTag compound) {
