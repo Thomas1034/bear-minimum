@@ -34,11 +34,11 @@ public abstract class PolarBearMixin {
         return original * 2;
     }
 
-    @ModifyExpressionValue(method = "createAttributes", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/Animal;createAnimalAttributes()Lnet/minecraft/world/entity/ai/attributes/AttributeSupplier$Builder;"))
+    @ModifyExpressionValue(method = "createAttributes", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Mob;createMobAttributes()Lnet/minecraft/world/entity/ai/attributes/AttributeSupplier$Builder;"))
     private static AttributeSupplier.Builder bearminimum$boostPolarBearDamage(AttributeSupplier.Builder original) {
         return original.add(Attributes.ARMOR, 10.0F)
-                .add(Attributes.KNOCKBACK_RESISTANCE, 0.5F)
-                .add(Attributes.SCALE, 1.2);
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.5F);
+        // TODO FIX THE SCALE SOMEHOW.
     }
 
     @ModifyExpressionValue(method = "playStepSound", at = @At(value = "CONSTANT", args = "floatValue=0.15"))
@@ -83,7 +83,7 @@ public abstract class PolarBearMixin {
                         10,
                         true,
                         true,
-                        (entity, level) -> true
+                        (entity) -> true
                 )
         );
     }

@@ -49,14 +49,14 @@ public class BearMinimum {
             () -> EntityType.Builder.of(BlackBearEntity::new, MobCategory.CREATURE)
                     .sized(1.4F, 1.4F)
                     .clientTrackingRange(10)
-                    .build(Constants.key(Registries.ENTITY_TYPE, "black_bear"))
+                    .build("black_bear")
     );
     public static final DeferredHolder<EntityType<?>, EntityType<BrownBearEntity>> BROWN_BEAR = ENTITY_TYPES.register(
             "brown_bear",
             () -> EntityType.Builder.of(BrownBearEntity::new, MobCategory.CREATURE)
                     .sized(1.4F, 1.4F)
                     .clientTrackingRange(10)
-                    .build(Constants.key(Registries.ENTITY_TYPE, "brown_bear"))
+                    .build("brown_bear")
     );
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(
             BuiltInRegistries.ITEM,
@@ -65,26 +65,26 @@ public class BearMinimum {
     public static final DeferredHolder<Item, SpawnEggItem> BLACK_BEAR_SPAWN_EGG = ITEMS.register(
             "black_bear_spawn_egg",
             () -> new SpawnEggItem(
-                    BLACK_BEAR.get(), new Item.Properties()
-                    .setId(Constants.key(Registries.ITEM, "black_bear_spawn_egg"))
+                    BLACK_BEAR.get(),
+                    0x161619,
+                    0x0, new Item.Properties()
             )
     );
     public static final DeferredHolder<Item, SpawnEggItem> BROWN_BEAR_SPAWN_EGG = ITEMS.register(
             "brown_bear_spawn_egg",
             () -> new SpawnEggItem(
-                    BROWN_BEAR.get(), new Item.Properties()
-                    .setId(Constants.key(Registries.ITEM, "brown_bear_spawn_egg"))
+                    BROWN_BEAR.get(), 0x573525, 0x382417, new Item.Properties()
             )
     );
     public static final DeferredHolder<Item, Item> BEAR_MEAT = ITEMS.register(
             "bear_meat",
             () -> new Item(new Item.Properties().food(ModFoods.BEAR_MEAT)
-                    .setId(Constants.key(Registries.ITEM, "bear_meat")))
+            )
     );
     public static final DeferredHolder<Item, Item> COOKED_BEAR_MEAT = ITEMS.register(
             "cooked_bear_meat",
             () -> new Item(new Item.Properties().food(ModFoods.COOKED_BEAR_MEAT)
-                    .setId(Constants.key(Registries.ITEM, "cooked_bear_meat")))
+            )
     );
 
     private static final ResourceLocation POLAR_BEAR_LOOT_TABLE_ID = ResourceLocation.fromNamespaceAndPath(

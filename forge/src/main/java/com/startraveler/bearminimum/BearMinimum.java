@@ -18,6 +18,7 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.NestedLootTable;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
@@ -41,39 +42,37 @@ public class BearMinimum {
             () -> EntityType.Builder.of(BlackBearEntity::new, MobCategory.CREATURE)
                     .sized(1.4F, 1.4F)
                     .clientTrackingRange(10)
-                    .build(Constants.key(Registries.ENTITY_TYPE, "black_bear"))
+                    .build("black_bear")
     );
     public static final RegistryObject<EntityType<BrownBearEntity>> BROWN_BEAR = ENTITY_TYPES.register(
             "brown_bear",
             () -> EntityType.Builder.of(BrownBearEntity::new, MobCategory.CREATURE)
                     .sized(1.4F, 1.4F)
                     .clientTrackingRange(10)
-                    .build(Constants.key(Registries.ENTITY_TYPE, "brown_bear"))
+                    .build("brown_bear")
     );
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Constants.MOD_ID);
     public static final RegistryObject<Item> BLACK_BEAR_SPAWN_EGG = ITEMS.register(
             "black_bear_spawn_egg",
-            () -> new SpawnEggItem(
-                    BLACK_BEAR.get(), new Item.Properties()
-                    .setId(Constants.key(Registries.ITEM, "black_bear_spawn_egg"))
+            () -> new ForgeSpawnEggItem(
+                    () -> BLACK_BEAR.get(),
+                    0x161619,
+                    0x0, new Item.Properties()
             )
     );
     public static final RegistryObject<Item> BROWN_BEAR_SPAWN_EGG = ITEMS.register(
             "brown_bear_spawn_egg",
-            () -> new SpawnEggItem(
-                    BROWN_BEAR.get(), new Item.Properties()
-                    .setId(Constants.key(Registries.ITEM, "brown_bear_spawn_egg"))
+            () -> new ForgeSpawnEggItem(
+                    () -> BROWN_BEAR.get(), 0x573525, 0x382417, new Item.Properties()
             )
     );
     public static final RegistryObject<Item> BEAR_MEAT = ITEMS.register(
             "bear_meat",
-            () -> new Item(new Item.Properties().food(ModFoods.BEAR_MEAT)
-                    .setId(Constants.key(Registries.ITEM, "bear_meat")))
+            () -> new Item(new Item.Properties().food(ModFoods.BEAR_MEAT))
     );
     public static final RegistryObject<Item> COOKED_BEAR_MEAT = ITEMS.register(
             "cooked_bear_meat",
-            () -> new Item(new Item.Properties().food(ModFoods.COOKED_BEAR_MEAT)
-                    .setId(Constants.key(Registries.ITEM, "cooked_bear_meat")))
+            () -> new Item(new Item.Properties().food(ModFoods.COOKED_BEAR_MEAT))
     );
     private static final ResourceLocation POLAR_BEAR_LOOT_TABLE_ID = ResourceLocation.fromNamespaceAndPath(
             "minecraft",

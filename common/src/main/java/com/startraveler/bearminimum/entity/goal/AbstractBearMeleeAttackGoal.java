@@ -20,7 +20,7 @@ public class AbstractBearMeleeAttackGoal extends MeleeAttackGoal {
     protected void checkAndPerformAttack(LivingEntity target) {
         if (this.canPerformAttack(target)) {
             this.resetAttackCooldown();
-            this.mob.doHurtTarget(getServerLevel(this.mob), target);
+            this.mob.doHurtTarget(target);
             this.bear.setStanding(false);
         } else if (this.mob.distanceToSqr(target) < (double) ((target.getBbWidth() + 3.0F) * (target.getBbWidth() + 3.0F))) {
             if (this.isTimeToAttack()) {

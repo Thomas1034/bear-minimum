@@ -29,7 +29,7 @@ public class ForageGoal extends MoveToBlockGoal {
     @Override
     public boolean canUse() {
         if (this.nextStartTick <= 0) {
-            if (!getServerLevel(this.bear).getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
+            if (!(this.bear.level()).getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
                 return false;
             }
 

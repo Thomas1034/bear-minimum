@@ -6,6 +6,8 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.function.Predicate;
+
 public class PersonalSpaceTargetGoal<T extends LivingEntity> extends NearestAttackableTargetGoal<T> {
     public final float attackWhenInDistance;
 
@@ -14,7 +16,7 @@ public class PersonalSpaceTargetGoal<T extends LivingEntity> extends NearestAtta
         this.attackWhenInDistance = attackWhenInDistance;
     }
 
-    public PersonalSpaceTargetGoal(Mob mob, Class<T> targetType, float attackWhenInDistance, boolean mustSee, TargetingConditions.Selector selector) {
+    public PersonalSpaceTargetGoal(Mob mob, Class<T> targetType, float attackWhenInDistance, boolean mustSee, Predicate<LivingEntity> selector) {
         super(mob, targetType, mustSee, selector);
         this.attackWhenInDistance = attackWhenInDistance;
     }
@@ -24,7 +26,7 @@ public class PersonalSpaceTargetGoal<T extends LivingEntity> extends NearestAtta
         this.attackWhenInDistance = attackWhenInDistance;
     }
 
-    public PersonalSpaceTargetGoal(Mob mob, Class<T> targetType, float attackWhenInDistance, int interval, boolean mustSee, boolean mustReach, @Nullable TargetingConditions.Selector selector) {
+    public PersonalSpaceTargetGoal(Mob mob, Class<T> targetType, float attackWhenInDistance, int interval, boolean mustSee, boolean mustReach, @Nullable Predicate<LivingEntity> selector) {
         super(mob, targetType, interval, mustSee, mustReach, selector);
         this.attackWhenInDistance = attackWhenInDistance;
     }

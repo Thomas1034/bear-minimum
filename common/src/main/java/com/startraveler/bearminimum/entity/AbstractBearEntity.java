@@ -29,6 +29,7 @@ public abstract class AbstractBearEntity extends PolarBear {
     @Override
     public boolean killedEntity(ServerLevel level, LivingEntity entity) {
         this.eatCropAgainTicks = TICKS_TILL_HUNGRY_AGAIN * 20;
+        this.isDiscrete();
         return super.killedEntity(level, entity);
     }
 
@@ -58,8 +59,8 @@ public abstract class AbstractBearEntity extends PolarBear {
     }
 
     @Override
-    public void customServerAiStep(ServerLevel level) {
-        super.customServerAiStep(level);
+    public void customServerAiStep() {
+        super.customServerAiStep();
 
         if (this.eatCropAgainTicks > 0) {
             this.eatCropAgainTicks -= this.random.nextInt(3);

@@ -1,6 +1,3 @@
 {
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "bearminimum:item/brown_bear_spawn_egg"
-  }
+  "parent": "item/template_spawn_egg"
 }

@@ -3,8 +3,8 @@ package com.startraveler.bearminimum.client.renderer;
 import com.startraveler.bearminimum.Constants;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.PolarBearRenderer;
-import net.minecraft.client.renderer.entity.state.PolarBearRenderState;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.animal.PolarBear;
 
 public class BrownBearRenderer extends PolarBearRenderer {
 
@@ -15,7 +15,7 @@ public class BrownBearRenderer extends PolarBearRenderer {
     }
 
     @Override
-    public ResourceLocation getTextureLocation(PolarBearRenderState state) {
+    public ResourceLocation getTextureLocation(PolarBear bear) {
         return BEAR_LOCATION;
     }
 

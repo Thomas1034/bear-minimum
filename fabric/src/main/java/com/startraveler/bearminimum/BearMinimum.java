@@ -20,7 +20,6 @@ import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SpawnEggItem;
@@ -41,7 +40,7 @@ public class BearMinimum implements ModInitializer {
             EntityType.Builder.of(BlackBearEntity::new, MobCategory.CREATURE)
                     .sized(1.4F, 1.4F)
                     .clientTrackingRange(10)
-                    .build(ResourceKey.create(Registries.ENTITY_TYPE, Constants.id("black_bear")))
+                    .build("black_bear")
     );
     public static final EntityType<BrownBearEntity> BROWN_BEAR = Registry.register(
             BuiltInRegistries.ENTITY_TYPE,
@@ -49,7 +48,7 @@ public class BearMinimum implements ModInitializer {
             EntityType.Builder.of(BrownBearEntity::new, MobCategory.CREATURE)
                     .sized(1.4F, 1.4F)
                     .clientTrackingRange(10)
-                    .build(ResourceKey.create(Registries.ENTITY_TYPE, Constants.id("brown_bear")))
+                    .build("brown_bear")
     );
     public static final Item BEAR_MEAT = register(
             "bear_meat",
@@ -58,12 +57,15 @@ public class BearMinimum implements ModInitializer {
     );
     public static final Item BROWN_BEAR_SPAWN_EGG = register(
             "brown_bear_spawn_egg",
-            properties -> new SpawnEggItem(BROWN_BEAR, properties),
+            properties -> new SpawnEggItem(BROWN_BEAR, 0x573525, 0x382417, properties),
             new Item.Properties()
     );
     public static final Item BLACK_BEAR_SPAWN_EGG = register(
             "black_bear_spawn_egg",
-            properties -> new SpawnEggItem(BLACK_BEAR, properties),
+            properties -> new SpawnEggItem(
+                    BLACK_BEAR, 0x161619,
+                    0x0, properties
+            ),
             new Item.Properties()
     );
     public static final Item COOKED_BEAR_MEAT = register(
@@ -85,7 +87,7 @@ public class BearMinimum implements ModInitializer {
         ResourceKey<Item> itemKey = Constants.key(Registries.ITEM, name);
 
         // Create the item instance.
-        Item item = itemFactory.apply(settings.setId(itemKey));
+        Item item = itemFactory.apply(settings);
 
         // Register the item.
         Registry.register(BuiltInRegistries.ITEM, itemKey, item);

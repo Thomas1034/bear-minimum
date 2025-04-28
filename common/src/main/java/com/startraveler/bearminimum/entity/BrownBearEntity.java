@@ -40,7 +40,7 @@ public class BrownBearEntity extends AbstractBearEntity {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Animal.createAnimalAttributes()
+        return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 50.0F)
                 .add(Attributes.FOLLOW_RANGE, 30.0F)
                 .add(Attributes.MOVEMENT_SPEED, 0.25F)
@@ -51,7 +51,7 @@ public class BrownBearEntity extends AbstractBearEntity {
     }
 
     public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob parent) {
-        return (AgeableMob) this.getType().create(level, EntitySpawnReason.BREEDING);
+        return (AgeableMob) this.getType().create(level);
     }
 
     protected void registerGoals() {
@@ -123,7 +123,7 @@ public class BrownBearEntity extends AbstractBearEntity {
                         10,
                         true,
                         true,
-                        (entity, level) -> this.wantsMoreFood() && entity.getType().is(this.getFoodPreferences().preyTag())
+                        (entity) -> this.wantsMoreFood() && entity.getType().is(this.getFoodPreferences().preyTag())
                 )
         );
         this.targetSelector.addGoal(5, new ResetUniversalAngerTargetGoal<>(this, false));
@@ -136,7 +136,7 @@ public class BrownBearEntity extends AbstractBearEntity {
                         10,
                         true,
                         true,
-                        (entity, level) -> true
+                        (entity) -> true
                 )
         );
     }

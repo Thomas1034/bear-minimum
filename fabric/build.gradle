@@ -23,7 +23,6 @@ loom {
     runs {
         client {
             client()
-            vmArgs "-Dfabric-tag-conventions-v2.missingTagTranslationWarning=VERBOSE"
             setConfigName('Fabric Client')
             ideConfigGenerated(true)
             runDir('runs/client')
