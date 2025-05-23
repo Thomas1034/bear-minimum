@@ -5,17 +5,13 @@ import com.startraveler.bearminimum.client.renderer.BrownBearRenderer;
 import com.startraveler.bearminimum.entity.BlackBearEntity;
 import com.startraveler.bearminimum.entity.BrownBearEntity;
 import net.minecraft.client.renderer.entity.EntityRenderers;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.storage.loot.LootPool;
-import net.minecraft.world.level.storage.loot.LootTable;
-import net.minecraft.world.level.storage.loot.entries.NestedLootTable;
+import net.minecraft.world.level.storage.loot.entries.LootTableReference;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeSpawnEggItem;
@@ -40,7 +36,7 @@ public class BearMinimum {
     public static final RegistryObject<EntityType<BlackBearEntity>> BLACK_BEAR = ENTITY_TYPES.register(
             "black_bear",
             () -> EntityType.Builder.of(BlackBearEntity::new, MobCategory.CREATURE)
-                    .sized(1.4F, 1.4F)
+                    .sized(1.4F * 0.8F, 1.4F * 0.8F)
                     .clientTrackingRange(10)
                     .build("black_bear")
     );
@@ -74,16 +70,16 @@ public class BearMinimum {
             "cooked_bear_meat",
             () -> new Item(new Item.Properties().food(ModFoods.COOKED_BEAR_MEAT))
     );
-    private static final ResourceLocation POLAR_BEAR_LOOT_TABLE_ID = ResourceLocation.fromNamespaceAndPath(
+    private static final ResourceLocation POLAR_BEAR_LOOT_TABLE_ID = new ResourceLocation(
             "minecraft",
             "entities/polar_bear"
     );
-    private static final ResourceKey<LootTable> MODIFIED_POLAR_BEAR_LOOT_TABLE_ID = Constants.key(
-            Registries.LOOT_TABLE,
+    private static final ResourceLocation MODIFIED_POLAR_BEAR_LOOT_TABLE_ID = Constants.id(
             "entities/polar_bear"
     );
 
-    public BearMinimum(FMLJavaModLoadingContext context) {
+    public BearMinimum() {
+        FMLJavaModLoadingContext context = FMLJavaModLoadingContext.get();
         IEventBus modBus = context.getModEventBus();
         // This method is invoked by the Forge mod loader when it is ready
         // to load your mod. You can access Forge and Common code in this
@@ -141,7 +137,7 @@ public class BearMinimum {
                 LootPool customPool = LootPool.lootPool()
                         .name(Constants.MOD_ID + "_add_bear_drops")
                         .setRolls(ConstantValue.exactly(1))
-                        .add(NestedLootTable.lootTableReference(MODIFIED_POLAR_BEAR_LOOT_TABLE_ID))
+                        .add(LootTableReference.lootTableReference(MODIFIED_POLAR_BEAR_LOOT_TABLE_ID))
                         .build();
                 event.getTable().addPool(customPool);
 

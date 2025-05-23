@@ -1,24 +1,23 @@
 package com.startraveler.bearminimum.entity;
 
 import com.startraveler.bearminimum.Constants;
-import com.startraveler.bearminimum.entity.goal.AbstractBearAttackPlayersGoal;
-import com.startraveler.bearminimum.entity.goal.AbstractBearHurtByTargetGoal;
-import com.startraveler.bearminimum.entity.goal.AbstractBearMeleeAttackGoal;
-import com.startraveler.bearminimum.entity.goal.ForageGoal;
+import com.startraveler.bearminimum.entity.goal.*;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.ResetUniversalAngerTargetGoal;
-import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.InstrumentItem;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 
@@ -46,8 +45,7 @@ public class BlackBearEntity extends AbstractBearEntity {
                 .add(Attributes.FOLLOW_RANGE, 10.0F)
                 .add(Attributes.MOVEMENT_SPEED, 0.25F)
                 .add(Attributes.ATTACK_DAMAGE, 4.0F)
-                .add(Attributes.ARMOR, 4.0F)
-                .add(Attributes.SCALE, 0.8);
+                .add(Attributes.ARMOR, 4.0F);
     }
 
     public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob parent) {
@@ -58,13 +56,7 @@ public class BlackBearEntity extends AbstractBearEntity {
         // super.registerGoals();
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new AbstractBearMeleeAttackGoal(this));
-        this.goalSelector.addGoal(
-                1, new PanicGoal(
-                        this,
-                        SCARED_BOOST,
-                        (bear) -> bear.isBaby() ? DamageTypeTags.PANIC_CAUSES : DamageTypeTags.PANIC_ENVIRONMENTAL_CAUSES
-                )
-        );
+        this.goalSelector.addGoal(1, new AbstractBearPanicGoal(this, SCARED_BOOST));
         this.goalSelector.addGoal(
                 2, new AvoidEntityGoal<>(
                         this,
@@ -79,7 +71,7 @@ public class BlackBearEntity extends AbstractBearEntity {
         this.goalSelector.addGoal(2, new BreedGoal(this, 1 / SCARED_BOOST));
         this.goalSelector.addGoal(
                 3,
-                new TemptGoal(this, 0.5F, (stack) -> stack.is(this.getFoodPreferences().foodTag()), true)
+                new TemptGoal(this, 0.5F, Ingredient.of(this.getFoodPreferences().foodTag()), true)
         );
         this.goalSelector.addGoal(
                 4, new AvoidEntityGoal<>(

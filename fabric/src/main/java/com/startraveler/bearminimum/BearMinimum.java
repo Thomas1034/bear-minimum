@@ -6,27 +6,27 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
-import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
-import net.fabricmc.fabric.api.loot.v3.LootTableSource;
+import net.fabricmc.fabric.api.loot.v2.LootTableEvents;
+import net.fabricmc.fabric.api.loot.v2.LootTableSource;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.storage.loot.LootDataManager;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
-import net.minecraft.world.level.storage.loot.entries.NestedLootTable;
+import net.minecraft.world.level.storage.loot.entries.LootTableReference;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 
 import java.util.function.Function;
@@ -38,7 +38,7 @@ public class BearMinimum implements ModInitializer {
             BuiltInRegistries.ENTITY_TYPE,
             Constants.id("black_bear"),
             EntityType.Builder.of(BlackBearEntity::new, MobCategory.CREATURE)
-                    .sized(1.4F, 1.4F)
+                    .sized(1.4F * 0.8F, 1.4F * 0.8F)
                     .clientTrackingRange(10)
                     .build("black_bear")
     );
@@ -73,12 +73,9 @@ public class BearMinimum implements ModInitializer {
             Item::new,
             new Item.Properties().food(ModFoods.COOKED_BEAR_MEAT)
     );
-    private static final ResourceKey<LootTable> POLAR_BEAR_LOOT_TABLE_ID = ResourceKey.create(
-            Registries.LOOT_TABLE,
-            ResourceLocation.withDefaultNamespace("entities/polar_bear")
-    );
-    private static final ResourceKey<LootTable> MODIFIED_POLAR_BEAR_LOOT_TABLE_ID = Constants.key(
-            Registries.LOOT_TABLE,
+    private static final ResourceLocation POLAR_BEAR_LOOT_TABLE_ID =
+            new ResourceLocation("entities/polar_bear");
+    private static final ResourceLocation MODIFIED_POLAR_BEAR_LOOT_TABLE_ID = Constants.id(
             "entities/polar_bear"
     );
 
@@ -119,13 +116,13 @@ public class BearMinimum implements ModInitializer {
             entries.accept(BROWN_BEAR_SPAWN_EGG);
         });
 
-        LootTableEvents.MODIFY.register((ResourceKey<LootTable> id, LootTable.Builder builder, LootTableSource source, HolderLookup.Provider holderLookupProvider) -> {
+        LootTableEvents.MODIFY.register((ResourceManager resourceManager, LootDataManager lootManager, ResourceLocation id, LootTable.Builder tableBuilder, LootTableSource source) -> {
             if (POLAR_BEAR_LOOT_TABLE_ID.equals(id)) {
                 LootPool customPool = LootPool.lootPool()
                         .setRolls(ConstantValue.exactly(1))
-                        .add(NestedLootTable.lootTableReference(MODIFIED_POLAR_BEAR_LOOT_TABLE_ID))
+                        .add(LootTableReference.lootTableReference(MODIFIED_POLAR_BEAR_LOOT_TABLE_ID))
                         .build();
-                builder.pool(customPool);
+                tableBuilder.pool(customPool);
             }
         });
 
@@ -140,7 +137,7 @@ public class BearMinimum implements ModInitializer {
 
         SpawnPlacements.register(
                 BLACK_BEAR,
-                SpawnPlacementTypes.ON_GROUND,
+                SpawnPlacements.Type.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 Animal::checkAnimalSpawnRules
         );
@@ -154,7 +151,7 @@ public class BearMinimum implements ModInitializer {
         );
         SpawnPlacements.register(
                 BROWN_BEAR,
-                SpawnPlacementTypes.ON_GROUND,
+                SpawnPlacements.Type.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 Animal::checkAnimalSpawnRules
         );

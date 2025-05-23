@@ -16,6 +16,7 @@ import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.InstrumentItem;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 
@@ -46,8 +47,7 @@ public class BrownBearEntity extends AbstractBearEntity {
                 .add(Attributes.MOVEMENT_SPEED, 0.25F)
                 .add(Attributes.ATTACK_DAMAGE, 6.0F)
                 .add(Attributes.ARMOR, 4.0F)
-                .add(Attributes.KNOCKBACK_RESISTANCE, 0.25F)
-                .add(Attributes.SCALE, 1.0);
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.25F);
     }
 
     public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob parent) {
@@ -58,13 +58,7 @@ public class BrownBearEntity extends AbstractBearEntity {
         super.registerGoals();
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new AbstractBearMeleeAttackGoal(this));
-        this.goalSelector.addGoal(
-                1, new PanicGoal(
-                        this,
-                        SCARED_BOOST,
-                        (bear) -> bear.isBaby() ? DamageTypeTags.PANIC_CAUSES : DamageTypeTags.PANIC_ENVIRONMENTAL_CAUSES
-                )
-        );
+        this.goalSelector.addGoal(1, new AbstractBearPanicGoal(this, SCARED_BOOST));
         this.goalSelector.addGoal(
                 2, new AvoidEntityGoal<>(
                         this,
@@ -79,7 +73,7 @@ public class BrownBearEntity extends AbstractBearEntity {
         this.goalSelector.addGoal(2, new BreedGoal(this, 0.8));
         this.goalSelector.addGoal(
                 3,
-                new TemptGoal(this, 0.5F, (stack) -> stack.is(this.getFoodPreferences().foodTag()), true)
+                new TemptGoal(this, 0.5F, Ingredient.of(this.getFoodPreferences().foodTag()), true)
         );
         this.goalSelector.addGoal(
                 8, new AvoidEntityGoal<>(
