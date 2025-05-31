@@ -58,7 +58,7 @@ public class ForageGoal extends MoveToBlockGoal {
             BlockPos blockpos = this.blockPos.above();
             BlockState blockstate = level.getBlockState(blockpos);
             Block block = blockstate.getBlock();
-            if (this.canRaid && blockstate.is(this.bear.foodPreferences.forageTag())) {
+            if (this.canRaid && blockstate.is(this.bear.getFoodPreferences().forageTag())) {
                 if (block instanceof CropBlock cropBlock) {
                     IntegerProperty property = ((CropBlockMixin) cropBlock).invokeGetAgeProperty();
                     int age = blockstate.getValue(property);
@@ -91,7 +91,7 @@ public class ForageGoal extends MoveToBlockGoal {
         BlockState blockstate = level.getBlockState(pos);
         if (blockstate.is(Blocks.FARMLAND) && this.wantsToRaid && !this.canRaid) {
             blockstate = level.getBlockState(pos.above());
-            if (blockstate.is(this.bear.foodPreferences.forageTag()) && (!(blockstate.getBlock() instanceof CropBlock cropBlock) || cropBlock.isMaxAge(
+            if (blockstate.is(this.bear.getFoodPreferences().forageTag()) && (!(blockstate.getBlock() instanceof CropBlock cropBlock) || cropBlock.isMaxAge(
                     blockstate))) {
                 this.canRaid = true;
                 return true;

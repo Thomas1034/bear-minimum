@@ -21,8 +21,13 @@ import net.minecraft.world.level.biome.Biome;
 
 
 public class BrownBearEntity extends AbstractBearEntity {
+    public static final float WIDTH = 1.8f;
+    public static final float HEIGHT = 1.8f;
 
-    public static final TagKey<Biome> HAS_BROWN_BEAR_SPAWNS = TagKey.create(Registries.BIOME, Constants.id("has_brown_bear_spawns"));
+    public static final TagKey<Biome> HAS_BROWN_BEAR_SPAWNS = TagKey.create(
+            Registries.BIOME,
+            Constants.id("has_brown_bear_spawns")
+    );
 
     public static final float PERSONAL_SPACE_DISTANCE = 4.0f;
     // Set up proper tags!
@@ -33,7 +38,7 @@ public class BrownBearEntity extends AbstractBearEntity {
     );
 
     public BrownBearEntity(EntityType<? extends BrownBearEntity> entityType, Level level) {
-        super(entityType, level, BROWN_BEAR_FOODS);
+        super(entityType, level);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -76,7 +81,7 @@ public class BrownBearEntity extends AbstractBearEntity {
         this.goalSelector.addGoal(2, new BreedGoal(this, 0.8));
         this.goalSelector.addGoal(
                 3,
-                new TemptGoal(this, 0.5F, (stack) -> stack.is(this.foodPreferences.foodTag()), true)
+                new TemptGoal(this, 0.5F, (stack) -> stack.is(this.getFoodPreferences().foodTag()), true)
         );
         this.goalSelector.addGoal(
                 8, new AvoidEntityGoal<>(
@@ -120,7 +125,8 @@ public class BrownBearEntity extends AbstractBearEntity {
                         10,
                         true,
                         true,
-                        (entity, level) -> this.wantsMoreFood() && entity.getType().is(this.foodPreferences.preyTag())
+                        (entity, level) -> this.wantsMoreFood() && entity.getType()
+                                .is(this.getFoodPreferences().preyTag())
                 )
         );
         this.targetSelector.addGoal(5, new ResetUniversalAngerTargetGoal<>(this, false));
@@ -138,4 +144,8 @@ public class BrownBearEntity extends AbstractBearEntity {
         );
     }
 
+    @Override
+    public BearFoodPreferences getFoodPreferences() {
+        return BROWN_BEAR_FOODS;
+    }
 }

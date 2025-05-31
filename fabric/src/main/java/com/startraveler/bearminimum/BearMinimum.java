@@ -13,6 +13,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
@@ -23,6 +24,7 @@ import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.storage.loot.LootPool;
@@ -39,7 +41,7 @@ public class BearMinimum implements ModInitializer {
             BuiltInRegistries.ENTITY_TYPE,
             Constants.id("black_bear"),
             EntityType.Builder.of(BlackBearEntity::new, MobCategory.CREATURE)
-                    .sized(1.4F, 1.4F)
+                    .sized(BlackBearEntity.WIDTH, BlackBearEntity.HEIGHT)
                     .clientTrackingRange(10)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE, Constants.id("black_bear")))
     );
@@ -47,7 +49,7 @@ public class BearMinimum implements ModInitializer {
             BuiltInRegistries.ENTITY_TYPE,
             Constants.id("brown_bear"),
             EntityType.Builder.of(BrownBearEntity::new, MobCategory.CREATURE)
-                    .sized(1.4F, 1.4F)
+                    .sized(BrownBearEntity.WIDTH, BrownBearEntity.HEIGHT)
                     .clientTrackingRange(10)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE, Constants.id("brown_bear")))
     );
