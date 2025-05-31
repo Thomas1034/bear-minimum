@@ -38,7 +38,7 @@ public class BearMinimum implements ModInitializer {
             BuiltInRegistries.ENTITY_TYPE,
             Constants.id("black_bear"),
             EntityType.Builder.of(BlackBearEntity::new, MobCategory.CREATURE)
-                    .sized(1.4F * 0.8F, 1.4F * 0.8F)
+                    .sized(BlackBearEntity.WIDTH, BlackBearEntity.HEIGHT)
                     .clientTrackingRange(10)
                     .build("black_bear")
     );

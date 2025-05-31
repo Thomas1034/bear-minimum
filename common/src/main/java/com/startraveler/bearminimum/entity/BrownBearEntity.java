@@ -4,15 +4,16 @@ import com.startraveler.bearminimum.Constants;
 import com.startraveler.bearminimum.entity.goal.*;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.ResetUniversalAngerTargetGoal;
-import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.InstrumentItem;
@@ -35,6 +36,8 @@ public class BrownBearEntity extends AbstractBearEntity {
             BearFoodPreferences.BROWN_BEAR_PREY,
             BearFoodPreferences.BROWN_BEAR_FORAGE
     );
+    public static final float WIDTH = 1.8F;
+    public static final float HEIGHT = 1.8F;
 
     public BrownBearEntity(EntityType<? extends BrownBearEntity> entityType, Level level) {
         super(entityType, level);
