@@ -24,6 +24,8 @@ import net.minecraft.world.level.biome.Biome;
 
 
 public class BlackBearEntity extends AbstractBearEntity {
+    public static final float WIDTH = 1.4f;
+    public static final float HEIGHT = 1.4f;
 
     public static final TagKey<Biome> HAS_BLACK_BEAR_SPAWNS = TagKey.create(
             Registries.BIOME,
@@ -46,8 +48,7 @@ public class BlackBearEntity extends AbstractBearEntity {
                 .add(Attributes.FOLLOW_RANGE, 10.0F)
                 .add(Attributes.MOVEMENT_SPEED, 0.25F)
                 .add(Attributes.ATTACK_DAMAGE, 4.0F)
-                .add(Attributes.ARMOR, 4.0F)
-                .add(Attributes.SCALE, 0.8);
+                .add(Attributes.ARMOR, 4.0F);
     }
 
     public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob parent) {

@@ -1,8 +1,11 @@
 package com.startraveler.bearminimum;
 
+import com.startraveler.bearminimum.client.model.BlackBearModel;
+import com.startraveler.bearminimum.client.model.BrownBearModel;
 import com.startraveler.bearminimum.client.renderer.BlackBearRenderer;
 import com.startraveler.bearminimum.client.renderer.BrownBearRenderer;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 
 public class BearMinimumClient implements ClientModInitializer {
@@ -10,5 +13,21 @@ public class BearMinimumClient implements ClientModInitializer {
     public void onInitializeClient() {
         EntityRendererRegistry.register(BearMinimum.BLACK_BEAR, BlackBearRenderer::new);
         EntityRendererRegistry.register(BearMinimum.BROWN_BEAR, BrownBearRenderer::new);
+        EntityModelLayerRegistry.registerModelLayer(
+                BlackBearModel.BODY_LAYER,
+                () -> BlackBearModel.createBodyLayer(false)
+        );
+        EntityModelLayerRegistry.registerModelLayer(
+                BlackBearModel.BODY_LAYER_BABY,
+                () -> BlackBearModel.createBodyLayer(true)
+        );
+        EntityModelLayerRegistry.registerModelLayer(
+                BrownBearModel.BODY_LAYER,
+                () -> BrownBearModel.createBodyLayer(false)
+        );
+        EntityModelLayerRegistry.registerModelLayer(
+                BrownBearModel.BODY_LAYER_BABY,
+                () -> BrownBearModel.createBodyLayer(true)
+        );
     }
 }

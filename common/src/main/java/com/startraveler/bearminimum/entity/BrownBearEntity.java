@@ -22,6 +22,9 @@ import net.minecraft.world.level.biome.Biome;
 
 public class BrownBearEntity extends AbstractBearEntity {
 
+    public static final float WIDTH = 1.8f;
+    public static final float HEIGHT = 1.8f;
+
     public static final TagKey<Biome> HAS_BROWN_BEAR_SPAWNS = TagKey.create(
             Registries.BIOME,
             Constants.id("has_brown_bear_spawns")
@@ -46,8 +49,7 @@ public class BrownBearEntity extends AbstractBearEntity {
                 .add(Attributes.MOVEMENT_SPEED, 0.25F)
                 .add(Attributes.ATTACK_DAMAGE, 6.0F)
                 .add(Attributes.ARMOR, 4.0F)
-                .add(Attributes.KNOCKBACK_RESISTANCE, 0.25F)
-                .add(Attributes.SCALE, 1.0);
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.25F);
     }
 
     public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob parent) {

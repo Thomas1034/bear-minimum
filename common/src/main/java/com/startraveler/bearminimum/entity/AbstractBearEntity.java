@@ -29,6 +29,7 @@ public abstract class AbstractBearEntity extends PolarBear {
     @Override
     public boolean killedEntity(ServerLevel level, LivingEntity entity) {
         this.eatCropAgainTicks = TICKS_TILL_HUNGRY_AGAIN * 20;
+        this.isDiscrete();
         return super.killedEntity(level, entity);
     }
 
