@@ -38,7 +38,7 @@ public class BearMinimum implements ModInitializer {
             BuiltInRegistries.ENTITY_TYPE,
             Constants.id("black_bear"),
             EntityType.Builder.of(BlackBearEntity::new, MobCategory.CREATURE)
-                    .sized(1.4F, 1.4F)
+                    .sized(BlackBearEntity.WIDTH, BlackBearEntity.HEIGHT)
                     .clientTrackingRange(10)
                     .build("black_bear")
     );
@@ -46,7 +46,7 @@ public class BearMinimum implements ModInitializer {
             BuiltInRegistries.ENTITY_TYPE,
             Constants.id("brown_bear"),
             EntityType.Builder.of(BrownBearEntity::new, MobCategory.CREATURE)
-                    .sized(1.4F, 1.4F)
+                    .sized(BrownBearEntity.WIDTH, BrownBearEntity.HEIGHT)
                     .clientTrackingRange(10)
                     .build("brown_bear")
     );
@@ -103,7 +103,7 @@ public class BearMinimum implements ModInitializer {
         // project.
 
         // Use Fabric to bootstrap the Common mod.
-        Constants.LOG.info("Hello Fabric world!");
+        // Constants.LOG.info("Hello Fabric world!");
         CommonClass.init();
 
 

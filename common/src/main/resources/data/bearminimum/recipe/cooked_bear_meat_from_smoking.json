@@ -3,7 +3,9 @@
   "category": "food",
   "cookingtime": 100,
   "experience": 0.35,
-  "ingredient": "bearminimum:bear_meat",
+  "ingredient": {
+    "item": "bearminimum:bear_meat"
+  },
   "result": {
     "id": "bearminimum:cooked_bear_meat"
   }

@@ -1,8 +1,11 @@
 {
   "values": [
-    "#minecraft:arthropod",
+    "#minecraft:beehive_inhabitors",
     "minecraft:rabbit",
-    "#minecraft:boat",
+    "minecraft:spider",
+    "minecraft:silverfish",
+    "minecraft:endermite",
+    "minecraft:boat",
     "minecraft:chest_minecart"
   ]
 }
