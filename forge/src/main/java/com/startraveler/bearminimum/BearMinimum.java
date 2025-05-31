@@ -1,6 +1,8 @@
 package com.startraveler.bearminimum;
 
+import com.startraveler.bearminimum.client.BlackBearModel;
 import com.startraveler.bearminimum.client.BlackBearRenderer;
+import com.startraveler.bearminimum.client.BrownBearModel;
 import com.startraveler.bearminimum.client.BrownBearRenderer;
 import com.startraveler.bearminimum.entity.BlackBearEntity;
 import com.startraveler.bearminimum.entity.BrownBearEntity;
@@ -16,6 +18,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.entries.LootTableReference;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
@@ -38,7 +41,7 @@ public class BearMinimum {
     public static final RegistryObject<EntityType<BlackBearEntity>> BLACK_BEAR = ENTITY_TYPES.register(
             "black_bear",
             () -> EntityType.Builder.of(BlackBearEntity::new, MobCategory.CREATURE)
-                    .sized(1.4F * 0.8F, 1.4F * 0.8F)
+                    .sized(BlackBearEntity.WIDTH, BlackBearEntity.HEIGHT)
                     .clientTrackingRange(10)
                     .build("black_bear")
     );
@@ -59,7 +62,7 @@ public class BearMinimum {
     public static final RegistryObject<EntityType<BrownBearEntity>> BROWN_BEAR = ENTITY_TYPES.register(
             "brown_bear",
             () -> EntityType.Builder.of(BrownBearEntity::new, MobCategory.CREATURE)
-                    .sized(1.4F, 1.4F)
+                    .sized(BrownBearEntity.WIDTH, BrownBearEntity.HEIGHT)
                     .clientTrackingRange(10)
                     .build("brown_bear")
     );
@@ -137,6 +140,12 @@ public class BearMinimum {
         public static void onClientSetup(FMLClientSetupEvent event) {
             EntityRenderers.register(BLACK_BEAR.get(), BlackBearRenderer::new);
             EntityRenderers.register(BROWN_BEAR.get(), BrownBearRenderer::new);
+        }
+
+        @SubscribeEvent
+        public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
+            event.registerLayerDefinition(BlackBearModel.BODY_LAYER, BlackBearModel::createBodyLayer);
+            event.registerLayerDefinition(BrownBearModel.BODY_LAYER, BrownBearModel::createBodyLayer);
         }
     }
 

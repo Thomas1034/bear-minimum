@@ -35,6 +35,9 @@ public class BrownBearEntity extends AbstractBearEntity {
             BearFoodPreferences.BROWN_BEAR_FORAGE
     );
 
+    public static final float WIDTH = 1.8F;
+    public static final float HEIGHT = 1.8F;
+
     public BrownBearEntity(EntityType<? extends BrownBearEntity> entityType, Level level) {
         super(entityType, level);
     }
