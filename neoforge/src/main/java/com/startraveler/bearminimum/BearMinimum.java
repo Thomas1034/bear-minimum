@@ -116,7 +116,7 @@ public class BearMinimum {
 
 
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
-    @EventBusSubscriber(modid = Constants.MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+    @EventBusSubscriber(modid = Constants.MOD_ID, value = Dist.CLIENT)
     public static class ClientModEventBusEvents {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
@@ -133,7 +133,7 @@ public class BearMinimum {
         }
     }
 
-    @EventBusSubscriber(modid = Constants.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
+    @EventBusSubscriber(modid = Constants.MOD_ID)
     public static class ModEventBusEvents {
 
         @SubscribeEvent
@@ -171,7 +171,7 @@ public class BearMinimum {
     }
 
 
-    @EventBusSubscriber(modid = Constants.MOD_ID, bus = EventBusSubscriber.Bus.GAME)
+    @EventBusSubscriber(modid = Constants.MOD_ID)
     public static class NeoForgeEventBusEvents {
         @SubscribeEvent
         public static void onLootTableLoad(LootTableLoadEvent event) {
