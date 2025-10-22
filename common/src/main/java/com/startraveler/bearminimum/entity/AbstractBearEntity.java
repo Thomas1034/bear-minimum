@@ -2,6 +2,7 @@ package com.startraveler.bearminimum.entity;
 
 
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.PolarBear;
@@ -28,9 +29,9 @@ public abstract class AbstractBearEntity extends PolarBear {
     }
 
     @Override
-    public boolean killedEntity(ServerLevel level, LivingEntity entity) {
+    public boolean killedEntity(ServerLevel level, LivingEntity entity, DamageSource damageSource) {
         this.eatCropAgainTicks = TICKS_TILL_HUNGRY_AGAIN * 20;
-        return super.killedEntity(level, entity);
+        return super.killedEntity(level, entity, damageSource);
     }
 
     public abstract BearFoodPreferences getFoodPreferences();
