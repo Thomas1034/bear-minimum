@@ -60,13 +60,13 @@ public class BearMinimum implements ModInitializer {
     );
     public static final Item BROWN_BEAR_SPAWN_EGG = register(
             "brown_bear_spawn_egg",
-            properties -> new SpawnEggItem(BROWN_BEAR, properties),
-            new Item.Properties()
+            SpawnEggItem::new,
+            new Item.Properties().spawnEgg(BROWN_BEAR)
     );
     public static final Item BLACK_BEAR_SPAWN_EGG = register(
             "black_bear_spawn_egg",
-            properties -> new SpawnEggItem(BLACK_BEAR, properties),
-            new Item.Properties()
+            SpawnEggItem::new,
+            new Item.Properties().spawnEgg(BLACK_BEAR)
     );
     public static final Item COOKED_BEAR_MEAT = register(
             "cooked_bear_meat",
