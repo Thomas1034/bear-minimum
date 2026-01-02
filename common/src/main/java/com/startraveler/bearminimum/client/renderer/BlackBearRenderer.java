@@ -2,16 +2,16 @@ package com.startraveler.bearminimum.client.renderer;
 
 import com.startraveler.bearminimum.Constants;
 import com.startraveler.bearminimum.client.model.BlackBearModel;
-import net.minecraft.client.model.PolarBearModel;
 import net.minecraft.client.renderer.entity.AgeableMobRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.state.PolarBearRenderState;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.animal.PolarBear;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.entity.animal.polarbear.PolarBear;
+import org.jetbrains.annotations.NotNull;
 
-public class BlackBearRenderer extends AgeableMobRenderer<PolarBear, PolarBearRenderState, BlackBearModel> {
+public class BlackBearRenderer extends AgeableMobRenderer<PolarBear, PolarBearRenderState, @NotNull BlackBearModel> {
 
-    private static final ResourceLocation BEAR_LOCATION = Constants.id("textures/entity/bear/black_bear.png");
+    private static final Identifier BEAR_LOCATION = Constants.id("textures/entity/bear/black_bear.png");
 
     public BlackBearRenderer(EntityRendererProvider.Context context) {
         super(
@@ -23,7 +23,7 @@ public class BlackBearRenderer extends AgeableMobRenderer<PolarBear, PolarBearRe
     }
 
     @Override
-    public ResourceLocation getTextureLocation(PolarBearRenderState state) {
+    public @NotNull Identifier getTextureLocation(PolarBearRenderState state) {
         return BEAR_LOCATION;
     }
 

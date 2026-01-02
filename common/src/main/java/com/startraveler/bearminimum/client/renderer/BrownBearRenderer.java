@@ -5,12 +5,13 @@ import com.startraveler.bearminimum.client.model.BrownBearModel;
 import net.minecraft.client.renderer.entity.AgeableMobRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.state.PolarBearRenderState;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.animal.PolarBear;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.entity.animal.polarbear.PolarBear;
+import org.jetbrains.annotations.NotNull;
 
-public class BrownBearRenderer extends AgeableMobRenderer<PolarBear, PolarBearRenderState, BrownBearModel> {
+public class BrownBearRenderer extends AgeableMobRenderer<PolarBear, PolarBearRenderState, @NotNull BrownBearModel> {
 
-    private static final ResourceLocation BEAR_LOCATION = Constants.id("textures/entity/bear/brown_bear.png");
+    private static final Identifier BEAR_LOCATION = Constants.id("textures/entity/bear/brown_bear.png");
 
     public BrownBearRenderer(EntityRendererProvider.Context context) {
         super(
@@ -22,7 +23,7 @@ public class BrownBearRenderer extends AgeableMobRenderer<PolarBear, PolarBearRe
     }
 
     @Override
-    public ResourceLocation getTextureLocation(PolarBearRenderState state) {
+    public Identifier getTextureLocation(PolarBearRenderState state) {
         return BEAR_LOCATION;
     }
 

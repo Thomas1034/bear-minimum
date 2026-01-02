@@ -11,7 +11,7 @@ import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.SpawnPlacementTypes;
@@ -38,6 +38,7 @@ import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import org.jetbrains.annotations.NotNull;
 
 @Mod(Constants.MOD_ID)
 public class BearMinimum {
@@ -47,14 +48,14 @@ public class BearMinimum {
             Constants.MOD_ID
     );
 
-    public static final DeferredHolder<EntityType<?>, EntityType<BlackBearEntity>> BLACK_BEAR = ENTITY_TYPES.register(
+    public static final DeferredHolder<EntityType<?>, @NotNull EntityType<@NotNull BlackBearEntity>> BLACK_BEAR = ENTITY_TYPES.register(
             "black_bear",
             () -> EntityType.Builder.of(BlackBearEntity::new, MobCategory.CREATURE)
                     .sized(BlackBearEntity.WIDTH, BlackBearEntity.HEIGHT)
                     .clientTrackingRange(10)
                     .build(Constants.key(Registries.ENTITY_TYPE, "black_bear"))
     );
-    public static final DeferredHolder<EntityType<?>, EntityType<BrownBearEntity>> BROWN_BEAR = ENTITY_TYPES.register(
+    public static final DeferredHolder<EntityType<?>, @NotNull EntityType<@NotNull BrownBearEntity>> BROWN_BEAR = ENTITY_TYPES.register(
             "brown_bear",
             () -> EntityType.Builder.of(BrownBearEntity::new, MobCategory.CREATURE)
                     .sized(BrownBearEntity.WIDTH, BrownBearEntity.HEIGHT)
@@ -89,7 +90,7 @@ public class BearMinimum {
                     .setId(Constants.key(Registries.ITEM, "cooked_bear_meat")))
     );
 
-    private static final ResourceLocation POLAR_BEAR_LOOT_TABLE_ID = ResourceLocation.fromNamespaceAndPath(
+    private static final Identifier POLAR_BEAR_LOOT_TABLE_ID = Identifier.fromNamespaceAndPath(
             "minecraft",
             "entities/polar_bear"
     );
@@ -174,7 +175,7 @@ public class BearMinimum {
     public static class NeoForgeEventBusEvents {
         @SubscribeEvent
         public static void onLootTableLoad(LootTableLoadEvent event) {
-            ResourceLocation tableName = event.getName();
+            Identifier tableName = event.getName();
 
             if (tableName.equals(POLAR_BEAR_LOOT_TABLE_ID)) {
                 LootPool customPool = LootPool.lootPool()

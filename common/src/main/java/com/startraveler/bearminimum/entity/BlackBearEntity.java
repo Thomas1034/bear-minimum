@@ -16,11 +16,12 @@ import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.ResetUniversalAngerTargetGoal;
 import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.npc.Villager;
+import net.minecraft.world.entity.npc.villager.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.InstrumentItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
+import org.jetbrains.annotations.NotNull;
 
 
 public class BlackBearEntity extends AbstractBearEntity {
@@ -42,7 +43,7 @@ public class BlackBearEntity extends AbstractBearEntity {
         super(entityType, level);
     }
 
-    public static AttributeSupplier.Builder createAttributes() {
+    public static AttributeSupplier.@NotNull Builder createAttributes() {
         return Animal.createAnimalAttributes()
                 .add(Attributes.MAX_HEALTH, 30.0F)
                 .add(Attributes.FOLLOW_RANGE, 10.0F)
@@ -51,7 +52,7 @@ public class BlackBearEntity extends AbstractBearEntity {
                 .add(Attributes.ARMOR, 4.0F);
     }
 
-    public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob parent) {
+    public AgeableMob getBreedOffspring(@NotNull ServerLevel level, @NotNull AgeableMob parent) {
         return (AgeableMob) this.getType().create(level, EntitySpawnReason.BREEDING);
     }
 
@@ -90,7 +91,7 @@ public class BlackBearEntity extends AbstractBearEntity {
                         4.0F,
                         SCARED_BOOST,
                         SCARED_BOOST,
-                        EntitySelector.NO_CREATIVE_OR_SPECTATOR::test
+                        EntitySelector.NO_CREATIVE_OR_SPECTATOR
                 )
         );
 
@@ -102,7 +103,7 @@ public class BlackBearEntity extends AbstractBearEntity {
                         4.0F,
                         SCARED_BOOST,
                         SCARED_BOOST,
-                        EntitySelector.NO_CREATIVE_OR_SPECTATOR::test
+                        EntitySelector.NO_CREATIVE_OR_SPECTATOR
                 )
         );
         this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.25F));

@@ -4,7 +4,8 @@ import com.startraveler.bearminimum.entity.AbstractBearEntity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
-import net.minecraft.world.entity.animal.PolarBear;
+import net.minecraft.world.entity.animal.polarbear.PolarBear;
+import org.jetbrains.annotations.NotNull;
 
 public class AbstractBearHurtByTargetGoal extends HurtByTargetGoal {
     private final AbstractBearEntity bear;
@@ -22,7 +23,7 @@ public class AbstractBearHurtByTargetGoal extends HurtByTargetGoal {
         }
     }
 
-    protected void alertOther(Mob mob, LivingEntity target) {
+    protected void alertOther(@NotNull Mob mob, @NotNull LivingEntity target) {
         if (mob instanceof PolarBear && !mob.isBaby()) {
             super.alertOther(mob, target);
         }

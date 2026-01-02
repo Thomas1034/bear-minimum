@@ -9,7 +9,7 @@ import com.startraveler.bearminimum.entity.BrownBearEntity;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.SpawnPlacementTypes;
@@ -82,7 +82,7 @@ public class BearMinimum {
             () -> new Item(new Item.Properties().food(ModFoods.COOKED_BEAR_MEAT)
                     .setId(Constants.key(Registries.ITEM, "cooked_bear_meat")))
     );
-    private static final ResourceLocation POLAR_BEAR_LOOT_TABLE_ID = ResourceLocation.fromNamespaceAndPath(
+    private static final Identifier POLAR_BEAR_LOOT_TABLE_ID = Identifier.fromNamespaceAndPath(
             "minecraft",
             "entities/polar_bear"
     );
@@ -167,7 +167,7 @@ public class BearMinimum {
 
         @SubscribeEvent
         public static void onLootTableLoad(LootTableLoadEvent event) {
-            ResourceLocation tableName = event.getName();
+            Identifier tableName = event.getName();
 
             if (tableName.equals(POLAR_BEAR_LOOT_TABLE_ID)) {
                 LootPool customPool = LootPool.lootPool()

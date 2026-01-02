@@ -2,17 +2,17 @@ package com.startraveler.bearminimum.client.model;
 
 import com.startraveler.bearminimum.Constants;
 import net.minecraft.client.model.BabyModelTransform;
-import net.minecraft.client.model.PolarBearModel;
 import net.minecraft.client.model.QuadrupedModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.entity.state.PolarBearRenderState;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
 
-public class BlackBearModel extends QuadrupedModel<PolarBearRenderState> {
+public class BlackBearModel extends QuadrupedModel<@NotNull PolarBearRenderState> {
     public static final ModelLayerLocation BODY_LAYER = new ModelLayerLocation(Constants.id("black_bear"), "main");
     public static final ModelLayerLocation BODY_LAYER_BABY = new ModelLayerLocation(
             Constants.id("black_bear_baby"),
@@ -101,20 +101,17 @@ public class BlackBearModel extends QuadrupedModel<PolarBearRenderState> {
                 .apply(MeshTransformer.scaling(1.2F));
     }
 
-    public void setupAnim(PolarBearRenderState renderState) {
+    public void setupAnim(@NotNull PolarBearRenderState renderState) {
         super.setupAnim(renderState);
         float standScaleSquared = renderState.standScale * renderState.standScale;
         float ageScale = renderState.ageScale;
         float headScale = renderState.isBaby ? 0.44444445F : 1.0F;
         ModelPart modelPart = this.body;
         modelPart.xRot -= standScaleSquared * (float)Math.PI * 0.35F;
-        modelPart = this.body;
         modelPart.y += standScaleSquared * ageScale * 5.0F; // was 2
         modelPart = this.rightFrontLeg;
         modelPart.y -= standScaleSquared * ageScale * 17.0F; // was 20
-        modelPart = this.rightFrontLeg;
         modelPart.z += standScaleSquared * ageScale * 4.0F;
-        modelPart = this.rightFrontLeg;
         modelPart.xRot -= standScaleSquared * (float)Math.PI * 0.45F;
         this.leftFrontLeg.y = this.rightFrontLeg.y;
         this.leftFrontLeg.z = this.rightFrontLeg.z;
@@ -122,9 +119,7 @@ public class BlackBearModel extends QuadrupedModel<PolarBearRenderState> {
         modelPart.xRot -= standScaleSquared * (float)Math.PI * 0.45F;
         modelPart = this.head;
         modelPart.y -= standScaleSquared * headScale * 18.0F; // was 24
-        modelPart = this.head;
         modelPart.z += standScaleSquared * headScale * 9.0F; // was 13
-        modelPart = this.head;
         modelPart.xRot += standScaleSquared * (float)Math.PI * 0.15F;
     }
 }

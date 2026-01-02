@@ -4,7 +4,6 @@ import com.startraveler.bearminimum.entity.AbstractBearEntity;
 import com.startraveler.bearminimum.mixin.CropBlockMixin;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.ai.goal.MoveToBlockGoal;
-import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
@@ -14,6 +13,8 @@ import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.gamerules.GameRules;
+import org.jetbrains.annotations.NotNull;
 
 public class ForageGoal extends MoveToBlockGoal {
     public static final int TICKS_TILL_START_AGAIN = 10;
@@ -29,7 +30,7 @@ public class ForageGoal extends MoveToBlockGoal {
     @Override
     public boolean canUse() {
         if (this.nextStartTick <= 0) {
-            if (!getServerLevel(this.bear).getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
+            if (!getServerLevel(this.bear).getGameRules().get(GameRules.MOB_GRIEFING)) {
                 return false;
             }
 
@@ -87,11 +88,12 @@ public class ForageGoal extends MoveToBlockGoal {
     }
 
     @Override
-    protected boolean isValidTarget(LevelReader level, BlockPos pos) {
+    protected boolean isValidTarget(LevelReader level, @NotNull BlockPos pos) {
         BlockState blockstate = level.getBlockState(pos);
         if (blockstate.is(Blocks.FARMLAND) && this.wantsToRaid && !this.canRaid) {
             blockstate = level.getBlockState(pos.above());
-            if (blockstate.is(this.bear.getFoodPreferences().forageTag()) && (!(blockstate.getBlock() instanceof CropBlock cropBlock) || cropBlock.isMaxAge(
+            if (blockstate.is(this.bear.getFoodPreferences()
+                    .forageTag()) && (!(blockstate.getBlock() instanceof CropBlock cropBlock) || cropBlock.isMaxAge(
                     blockstate))) {
                 this.canRaid = true;
                 return true;

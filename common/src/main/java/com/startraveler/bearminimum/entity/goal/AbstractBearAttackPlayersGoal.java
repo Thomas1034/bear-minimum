@@ -2,10 +2,10 @@ package com.startraveler.bearminimum.entity.goal;
 
 import com.startraveler.bearminimum.entity.AbstractBearEntity;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.animal.PolarBear;
+import net.minecraft.world.entity.animal.polarbear.PolarBear;
 import net.minecraft.world.entity.player.Player;
 
-public class AbstractBearAttackPlayersGoal extends NearestAttackableTargetGoal<Player> {
+public class AbstractBearAttackPlayersGoal extends NearestAttackableTargetGoal<@org.jetbrains.annotations.NotNull Player> {
     private final AbstractBearEntity bear;
 
     public AbstractBearAttackPlayersGoal(AbstractBearEntity bear) {
@@ -14,9 +14,7 @@ public class AbstractBearAttackPlayersGoal extends NearestAttackableTargetGoal<P
     }
 
     public boolean canUse() {
-        if (this.bear.isBaby()) {
-            return false;
-        } else {
+        if (!this.bear.isBaby()) {
             if (super.canUse()) {
                 for (PolarBear polarbear : this.bear.level()
                         .getEntitiesOfClass(PolarBear.class, this.bear.getBoundingBox().inflate(8.0F, 4.0F, 8.0F))) {
@@ -25,9 +23,8 @@ public class AbstractBearAttackPlayersGoal extends NearestAttackableTargetGoal<P
                     }
                 }
             }
-
-            return false;
         }
+        return false;
     }
 
     protected double getFollowDistance() {

@@ -8,10 +8,9 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.world.entity.ai.goal.BreedGoal;
-import net.minecraft.world.entity.animal.PolarBear;
-import net.minecraft.world.entity.npc.Villager;
+import net.minecraft.world.entity.animal.polarbear.PolarBear;
+import net.minecraft.world.entity.npc.villager.Villager;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.InstrumentItem;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -59,7 +58,7 @@ public abstract class PolarBearMixin {
                         bearminimum$PERSONAL_SPACE_DISTANCE * 2,
                         1 / AbstractBearEntity.SCARED_BOOST,
                         1 / AbstractBearEntity.SCARED_BOOST,
-                        EntitySelector.NO_CREATIVE_OR_SPECTATOR::test
+                        EntitySelector.NO_CREATIVE_OR_SPECTATOR
                 )
         );
 
@@ -71,7 +70,7 @@ public abstract class PolarBearMixin {
                         bearminimum$PERSONAL_SPACE_DISTANCE * 2,
                         1 / AbstractBearEntity.SCARED_BOOST,
                         1 / AbstractBearEntity.SCARED_BOOST,
-                        EntitySelector.NO_CREATIVE_OR_SPECTATOR::test
+                        EntitySelector.NO_CREATIVE_OR_SPECTATOR
                 )
         );
 

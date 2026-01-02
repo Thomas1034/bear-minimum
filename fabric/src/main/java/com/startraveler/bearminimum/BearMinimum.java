@@ -15,7 +15,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.SpawnPlacementTypes;
@@ -75,7 +75,7 @@ public class BearMinimum implements ModInitializer {
     );
     private static final ResourceKey<LootTable> POLAR_BEAR_LOOT_TABLE_ID = ResourceKey.create(
             Registries.LOOT_TABLE,
-            ResourceLocation.withDefaultNamespace("entities/polar_bear")
+            Identifier.withDefaultNamespace("entities/polar_bear")
     );
     private static final ResourceKey<LootTable> MODIFIED_POLAR_BEAR_LOOT_TABLE_ID = Constants.key(
             Registries.LOOT_TABLE,
