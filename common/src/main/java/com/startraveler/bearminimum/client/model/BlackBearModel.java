@@ -107,19 +107,19 @@ public class BlackBearModel extends QuadrupedModel<@NotNull PolarBearRenderState
         float ageScale = renderState.ageScale;
         float headScale = renderState.isBaby ? 0.44444445F : 1.0F;
         ModelPart modelPart = this.body;
-        modelPart.xRot -= standScaleSquared * (float)Math.PI * 0.35F;
+        modelPart.xRot -= standScaleSquared * (float) Math.PI * 0.35F;
         modelPart.y += standScaleSquared * ageScale * 5.0F; // was 2
         modelPart = this.rightFrontLeg;
         modelPart.y -= standScaleSquared * ageScale * 17.0F; // was 20
         modelPart.z += standScaleSquared * ageScale * 4.0F;
-        modelPart.xRot -= standScaleSquared * (float)Math.PI * 0.45F;
+        modelPart.xRot -= standScaleSquared * (float) Math.PI * 0.45F;
         this.leftFrontLeg.y = this.rightFrontLeg.y;
         this.leftFrontLeg.z = this.rightFrontLeg.z;
         modelPart = this.leftFrontLeg;
-        modelPart.xRot -= standScaleSquared * (float)Math.PI * 0.45F;
+        modelPart.xRot -= standScaleSquared * (float) Math.PI * 0.45F;
         modelPart = this.head;
         modelPart.y -= standScaleSquared * headScale * 18.0F; // was 24
         modelPart.z += standScaleSquared * headScale * 9.0F; // was 13
-        modelPart.xRot += standScaleSquared * (float)Math.PI * 0.15F;
+        modelPart.xRot += standScaleSquared * (float) Math.PI * 0.15F;
     }
 }

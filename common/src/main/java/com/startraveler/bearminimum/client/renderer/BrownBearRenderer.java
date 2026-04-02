@@ -9,7 +9,8 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.animal.polarbear.PolarBear;
 import org.jetbrains.annotations.NotNull;
 
-public class BrownBearRenderer extends AgeableMobRenderer<PolarBear, PolarBearRenderState, @NotNull BrownBearModel> {
+@SuppressWarnings("deprecation")
+public class BrownBearRenderer extends AgeableMobRenderer<@NotNull PolarBear, @NotNull PolarBearRenderState, @NotNull BrownBearModel> {
 
     private static final Identifier BEAR_LOCATION = Constants.id("textures/entity/bear/brown_bear.png");
 
@@ -23,7 +24,7 @@ public class BrownBearRenderer extends AgeableMobRenderer<PolarBear, PolarBearRe
     }
 
     @Override
-    public Identifier getTextureLocation(PolarBearRenderState state) {
+    public @NotNull Identifier getTextureLocation(PolarBearRenderState state) {
         return BEAR_LOCATION;
     }
 

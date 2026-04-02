@@ -1,15 +1,11 @@
+package com.startraveler.bearminimum;
+
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.core.GlobalPos;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.levelgen.WorldDimensions;
 
 import java.util.concurrent.ConcurrentHashMap;
 
+@SuppressWarnings("unused")
 public class GlyphType {
 
     private static final ConcurrentHashMap<String, GlyphType> CACHE = new ConcurrentHashMap<>();
@@ -43,7 +39,7 @@ public class GlyphType {
 
     @Override
     public String toString() {
-        return "GlyphType[text=" + text + "]";
+        return "com.startraveler.bearminimum.GlyphType[text=" + text + "]";
     }
 
     public static class Constants {

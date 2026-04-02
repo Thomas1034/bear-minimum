@@ -2,10 +2,9 @@ package com.startraveler.bearminimum;
 
 import com.startraveler.bearminimum.entity.BlackBearEntity;
 import com.startraveler.bearminimum.entity.BrownBearEntity;
-import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
-import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
 import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
 import net.fabricmc.fabric.api.loot.v3.LootTableSource;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
@@ -13,31 +12,28 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.NestedLootTable;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Function;
 
 public class BearMinimum implements ModInitializer {
 
-
-    public static final EntityType<BlackBearEntity> BLACK_BEAR = Registry.register(
+    public static final EntityType<@NotNull BlackBearEntity> BLACK_BEAR = Registry.register(
             BuiltInRegistries.ENTITY_TYPE,
             Constants.id("black_bear"),
             EntityType.Builder.of(BlackBearEntity::new, MobCategory.CREATURE)
@@ -45,7 +41,7 @@ public class BearMinimum implements ModInitializer {
                     .clientTrackingRange(10)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE, Constants.id("black_bear")))
     );
-    public static final EntityType<BrownBearEntity> BROWN_BEAR = Registry.register(
+    public static final EntityType<@NotNull BrownBearEntity> BROWN_BEAR = Registry.register(
             BuiltInRegistries.ENTITY_TYPE,
             Constants.id("brown_bear"),
             EntityType.Builder.of(BrownBearEntity::new, MobCategory.CREATURE)
@@ -96,6 +92,7 @@ public class BearMinimum implements ModInitializer {
     }
 
     @Override
+    @SuppressWarnings("all")
     public void onInitialize() {
 
         // This method is invoked by the Fabric mod loader when it is ready
@@ -106,15 +103,14 @@ public class BearMinimum implements ModInitializer {
         // Constants.LOG.info("Hello Fabric world!");
         CommonClass.init();
 
-
         FabricDefaultAttributeRegistry.register(BLACK_BEAR, BlackBearEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(BROWN_BEAR, BrownBearEntity.createAttributes());
 
-        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.FOOD_AND_DRINKS).register(entries -> {
+        CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.FOOD_AND_DRINKS).register(entries -> {
             entries.accept(BEAR_MEAT);
             entries.accept(COOKED_BEAR_MEAT);
         });
-        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.SPAWN_EGGS).register(entries -> {
+        CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.SPAWN_EGGS).register(entries -> {
             entries.accept(BLACK_BEAR_SPAWN_EGG);
             entries.accept(BROWN_BEAR_SPAWN_EGG);
         });

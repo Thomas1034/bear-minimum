@@ -8,10 +8,11 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.entity.state.PolarBearRenderState;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
 
-public class BrownBearModel extends QuadrupedModel<PolarBearRenderState> {
+public class BrownBearModel extends QuadrupedModel<@NotNull PolarBearRenderState> {
     public static final ModelLayerLocation BODY_LAYER = new ModelLayerLocation(Constants.id("brown_bear"), "main");
     public static final ModelLayerLocation BODY_LAYER_BABY = new ModelLayerLocation(
             Constants.id("brown_bear_baby"),
@@ -100,30 +101,25 @@ public class BrownBearModel extends QuadrupedModel<PolarBearRenderState> {
                 .apply(MeshTransformer.scaling(1.2F));
     }
 
-    public void setupAnim(PolarBearRenderState renderState) {
+    public void setupAnim(@NotNull PolarBearRenderState renderState) {
         super.setupAnim(renderState);
         float standScaleSquared = renderState.standScale * renderState.standScale;
         float ageScale = renderState.ageScale;
         float headScale = renderState.isBaby ? 0.44444445F : 1.0F;
         ModelPart modelPart = this.body;
-        modelPart.xRot -= standScaleSquared * (float)Math.PI * 0.35F;
-        modelPart = this.body;
+        modelPart.xRot -= standScaleSquared * (float) Math.PI * 0.35F;
         modelPart.y += standScaleSquared * ageScale * 2.0F;
         modelPart = this.rightFrontLeg;
         modelPart.y -= standScaleSquared * ageScale * 20.0F;
-        modelPart = this.rightFrontLeg;
         modelPart.z += standScaleSquared * ageScale * 4.0F;
-        modelPart = this.rightFrontLeg;
-        modelPart.xRot -= standScaleSquared * (float)Math.PI * 0.45F;
+        modelPart.xRot -= standScaleSquared * (float) Math.PI * 0.45F;
         this.leftFrontLeg.y = this.rightFrontLeg.y;
         this.leftFrontLeg.z = this.rightFrontLeg.z;
         modelPart = this.leftFrontLeg;
-        modelPart.xRot -= standScaleSquared * (float)Math.PI * 0.45F;
+        modelPart.xRot -= standScaleSquared * (float) Math.PI * 0.45F;
         modelPart = this.head;
         modelPart.y -= standScaleSquared * headScale * 24.0F; // was 24
-        modelPart = this.head;
         modelPart.z += standScaleSquared * headScale * 11.0F; // was 13
-        modelPart = this.head;
-        modelPart.xRot += standScaleSquared * (float)Math.PI * 0.15F;
+        modelPart.xRot += standScaleSquared * (float) Math.PI * 0.15F;
     }
 }

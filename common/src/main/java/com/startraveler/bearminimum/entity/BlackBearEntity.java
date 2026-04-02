@@ -75,7 +75,7 @@ public class BlackBearEntity extends AbstractBearEntity {
                         16.0F,
                         SCARED_BOOST * SCARED_BOOST,
                         SCARED_BOOST * SCARED_BOOST,
-                        entity -> true
+                        _ -> true
                 )
         );
         this.goalSelector.addGoal(2, new BreedGoal(this, 1 / SCARED_BOOST));
@@ -87,7 +87,7 @@ public class BlackBearEntity extends AbstractBearEntity {
                 4, new AvoidEntityGoal<>(
                         this,
                         Player.class,
-                        (entity) -> !this.isAngry(),
+                        (_) -> !this.isAngry(),
                         4.0F,
                         SCARED_BOOST,
                         SCARED_BOOST,
@@ -99,7 +99,7 @@ public class BlackBearEntity extends AbstractBearEntity {
                 4, new AvoidEntityGoal<>(
                         this,
                         Villager.class,
-                        (entity) -> !this.isAngry(),
+                        (_) -> !this.isAngry(),
                         4.0F,
                         SCARED_BOOST,
                         SCARED_BOOST,
@@ -124,8 +124,7 @@ public class BlackBearEntity extends AbstractBearEntity {
                         10,
                         true,
                         true,
-                        (entity, level) -> this.wantsMoreFood() && entity.getType()
-                                .is(this.getFoodPreferences().preyTag())
+                        (entity, _) -> this.wantsMoreFood() && entity.is(this.getFoodPreferences().preyTag())
                 )
         );
         this.targetSelector.addGoal(5, new ResetUniversalAngerTargetGoal<>(this, false));

@@ -66,25 +66,25 @@ public class BearMinimum {
             BuiltInRegistries.ITEM,
             Constants.MOD_ID
     );
-    public static final DeferredHolder<Item, SpawnEggItem> BLACK_BEAR_SPAWN_EGG = ITEMS.register(
+    public static final DeferredHolder<Item, @NotNull SpawnEggItem> BLACK_BEAR_SPAWN_EGG = ITEMS.register(
             "black_bear_spawn_egg",
             () -> new SpawnEggItem(new Item.Properties().spawnEgg(BLACK_BEAR.get())
                     .setId(Constants.key(Registries.ITEM, "black_bear_spawn_egg"))
             )
     );
-    public static final DeferredHolder<Item, SpawnEggItem> BROWN_BEAR_SPAWN_EGG = ITEMS.register(
+    public static final DeferredHolder<Item, @NotNull SpawnEggItem> BROWN_BEAR_SPAWN_EGG = ITEMS.register(
             "brown_bear_spawn_egg",
             () -> new SpawnEggItem(
                     new Item.Properties().spawnEgg(BROWN_BEAR.get())
                     .setId(Constants.key(Registries.ITEM, "brown_bear_spawn_egg"))
             )
     );
-    public static final DeferredHolder<Item, Item> BEAR_MEAT = ITEMS.register(
+    public static final DeferredHolder<Item, @NotNull Item> BEAR_MEAT = ITEMS.register(
             "bear_meat",
             () -> new Item(new Item.Properties().food(ModFoods.BEAR_MEAT)
                     .setId(Constants.key(Registries.ITEM, "bear_meat")))
     );
-    public static final DeferredHolder<Item, Item> COOKED_BEAR_MEAT = ITEMS.register(
+    public static final DeferredHolder<Item, @NotNull Item> COOKED_BEAR_MEAT = ITEMS.register(
             "cooked_bear_meat",
             () -> new Item(new Item.Properties().food(ModFoods.COOKED_BEAR_MEAT)
                     .setId(Constants.key(Registries.ITEM, "cooked_bear_meat")))
@@ -101,6 +101,9 @@ public class BearMinimum {
 
     public BearMinimum(ModContainer modContainer) {
         IEventBus modBus = modContainer.getEventBus();
+        if (modBus == null) {
+            throw new NullPointerException("Mod event bus must not be null!");
+        }
         // This method is invoked by the NeoForge mod loader when it is ready
         // to load your mod. You can access NeoForge and Common code in this
         // project.

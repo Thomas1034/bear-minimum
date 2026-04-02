@@ -76,7 +76,7 @@ public class BrownBearEntity extends AbstractBearEntity {
                         PERSONAL_SPACE_DISTANCE * 3,
                         SCARED_BOOST,
                         SCARED_BOOST,
-                        entity -> true
+                        _ -> true
                 )
         );
         this.goalSelector.addGoal(2, new BreedGoal(this, 0.8));
@@ -88,7 +88,7 @@ public class BrownBearEntity extends AbstractBearEntity {
                 8, new AvoidEntityGoal<>(
                         this,
                         Player.class,
-                        (entity) -> !this.isAngry(),
+                        (_) -> !this.isAngry(),
                         PERSONAL_SPACE_DISTANCE * 2,
                         SCARED_BOOST,
                         SCARED_BOOST,
@@ -100,7 +100,7 @@ public class BrownBearEntity extends AbstractBearEntity {
                 8, new AvoidEntityGoal<>(
                         this,
                         Villager.class,
-                        (entity) -> !this.isAngry(),
+                        (_) -> !this.isAngry(),
                         PERSONAL_SPACE_DISTANCE * 2,
                         SCARED_BOOST,
                         SCARED_BOOST,
@@ -126,8 +126,7 @@ public class BrownBearEntity extends AbstractBearEntity {
                         10,
                         true,
                         true,
-                        (entity, level) -> this.wantsMoreFood() && entity.getType()
-                                .is(this.getFoodPreferences().preyTag())
+                        (entity, _) -> this.wantsMoreFood() && entity.is(this.getFoodPreferences().preyTag())
                 )
         );
         this.targetSelector.addGoal(5, new ResetUniversalAngerTargetGoal<>(this, false));
@@ -140,7 +139,7 @@ public class BrownBearEntity extends AbstractBearEntity {
                         10,
                         true,
                         true,
-                        (entity, level) -> true
+                        (_, _) -> true
                 )
         );
     }
