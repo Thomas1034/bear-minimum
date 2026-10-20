@@ -4,13 +4,12 @@ package com.startraveler.bearminimum.entity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.PolarBear;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-
-import java.util.HashMap;
-import java.util.Map;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class AbstractBearEntity extends PolarBear {
 
@@ -24,7 +23,7 @@ public abstract class AbstractBearEntity extends PolarBear {
     }
 
     @Override
-    public boolean canBeLeashed(Player player) {
+    public boolean canBeLeashed(@NotNull Player player) {
         return !this.isAngry();
     }
 
@@ -35,7 +34,8 @@ public abstract class AbstractBearEntity extends PolarBear {
         return stack.is(this.getFoodPreferences().foodTag());
     }
 
-    public void readAdditionalSaveData(CompoundTag compound) {
+    @Override
+    public void readAdditionalSaveData(@NotNull CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         this.eatCropAgainTicks = 0;
         if (compound.contains(EAT_CROP_AGAIN_TICKS_ID)) {
@@ -43,7 +43,8 @@ public abstract class AbstractBearEntity extends PolarBear {
         }
     }
 
-    public void addAdditionalSaveData(CompoundTag compound) {
+    @Override
+    public void addAdditionalSaveData(@NotNull CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putInt(EAT_CROP_AGAIN_TICKS_ID, this.eatCropAgainTicks);
     }
@@ -54,7 +55,7 @@ public abstract class AbstractBearEntity extends PolarBear {
     }
 
     @Override
-    public boolean doHurtTarget(Entity target) {
+    public boolean doHurtTarget(@NotNull Entity target) {
         boolean succeeded = super.doHurtTarget(target);
         if (succeeded && !target.isAlive()) {
             this.eatCropAgainTicks = TICKS_TILL_HUNGRY_AGAIN * 20;
@@ -74,8 +75,13 @@ public abstract class AbstractBearEntity extends PolarBear {
         }
     }
 
+    @Override
+    public boolean canAttack(@NotNull LivingEntity other) {
+        return !this.isBaby() && super.canAttack(other);
+    }
+
     public boolean wantsMoreFood() {
-        return this.eatCropAgainTicks <= 0;
+        return this.eatCropAgainTicks <= 0 && !this.isBaby();
     }
 
 }
