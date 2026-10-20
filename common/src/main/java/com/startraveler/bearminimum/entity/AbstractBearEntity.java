@@ -10,6 +10,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import org.jspecify.annotations.NonNull;
 
 public abstract class AbstractBearEntity extends PolarBear {
 
@@ -20,7 +21,6 @@ public abstract class AbstractBearEntity extends PolarBear {
 
     public AbstractBearEntity(EntityType<? extends AbstractBearEntity> entityType, Level level) {
         super(entityType, level);
-
     }
 
     @Override
@@ -29,7 +29,7 @@ public abstract class AbstractBearEntity extends PolarBear {
     }
 
     @Override
-    public boolean killedEntity(ServerLevel level, LivingEntity entity, DamageSource damageSource) {
+    public boolean killedEntity(@NonNull ServerLevel level, @NonNull LivingEntity entity, @NonNull DamageSource damageSource) {
         this.eatCropAgainTicks = TICKS_TILL_HUNGRY_AGAIN * 20;
         return super.killedEntity(level, entity, damageSource);
     }
@@ -41,13 +41,13 @@ public abstract class AbstractBearEntity extends PolarBear {
     }
 
     @Override
-    public void readAdditionalSaveData(ValueInput compound) {
+    public void readAdditionalSaveData(@NonNull ValueInput compound) {
         super.readAdditionalSaveData(compound);
         this.eatCropAgainTicks = compound.getIntOr(EAT_CROP_AGAIN_TICKS_ID, 0);
     }
 
     @Override
-    public void addAdditionalSaveData(ValueOutput compound) {
+    public void addAdditionalSaveData(@NonNull ValueOutput compound) {
         super.addAdditionalSaveData(compound);
         compound.putInt(EAT_CROP_AGAIN_TICKS_ID, this.eatCropAgainTicks);
     }
@@ -58,7 +58,7 @@ public abstract class AbstractBearEntity extends PolarBear {
     }
 
     @Override
-    public void customServerAiStep(ServerLevel level) {
+    public void customServerAiStep(@NonNull ServerLevel level) {
         super.customServerAiStep(level);
 
         if (this.eatCropAgainTicks > 0) {
@@ -69,8 +69,13 @@ public abstract class AbstractBearEntity extends PolarBear {
         }
     }
 
+    @Override
+    public boolean canAttack(@NonNull LivingEntity other) {
+        return !this.isBaby() && super.canAttack(other);
+    }
+
     public boolean wantsMoreFood() {
-        return this.eatCropAgainTicks <= 0;
+        return this.eatCropAgainTicks <= 0 && !this.isBaby();
     }
 
 }

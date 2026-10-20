@@ -3,12 +3,13 @@ package com.startraveler.bearminimum.entity.goal;
 import com.startraveler.bearminimum.entity.AbstractBearEntity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import org.jspecify.annotations.NonNull;
 
 public class AbstractBearMeleeAttackGoal extends MeleeAttackGoal {
     private final AbstractBearEntity bear;
 
     public AbstractBearMeleeAttackGoal(AbstractBearEntity bear) {
-        super(bear, (double) 1.25F, true);
+        super(bear, 1.25F, true);
         this.bear = bear;
     }
 
@@ -17,7 +18,7 @@ public class AbstractBearMeleeAttackGoal extends MeleeAttackGoal {
         super.stop();
     }
 
-    protected void checkAndPerformAttack(LivingEntity target) {
+    protected void checkAndPerformAttack(@NonNull LivingEntity target) {
         if (this.canPerformAttack(target)) {
             this.resetAttackCooldown();
             this.mob.doHurtTarget(getServerLevel(this.mob), target);
