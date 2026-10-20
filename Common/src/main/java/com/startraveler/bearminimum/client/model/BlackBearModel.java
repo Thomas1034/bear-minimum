@@ -1,13 +1,13 @@
 package com.startraveler.bearminimum.client.model;
 
 import com.startraveler.bearminimum.Constants;
-import net.minecraft.client.model.PolarBearModel;
 import net.minecraft.client.model.QuadrupedModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.world.entity.animal.PolarBear;
+import org.jetbrains.annotations.NotNull;
 
 public class BlackBearModel<T extends PolarBear> extends QuadrupedModel<T> {
     public static final ModelLayerLocation BODY_LAYER = new ModelLayerLocation(Constants.id("black_bear"), "main");
@@ -22,7 +22,7 @@ public class BlackBearModel<T extends PolarBear> extends QuadrupedModel<T> {
         PartDefinition partdefinition = meshdefinition.getRoot();
 
 
-        PartDefinition head = partdefinition.addOrReplaceChild(
+        partdefinition.addOrReplaceChild(
                 "head",
                 CubeListBuilder.create()
                         .texOffs(1, 0)
@@ -36,7 +36,7 @@ public class BlackBearModel<T extends PolarBear> extends QuadrupedModel<T> {
                 PartPose.offset(0.0F, 12.0F, -11.0F)
         );
 
-        PartDefinition body = partdefinition.addOrReplaceChild(
+        partdefinition.addOrReplaceChild(
                 "body",
                 CubeListBuilder.create()
                         .texOffs(4, 21)
@@ -46,7 +46,7 @@ public class BlackBearModel<T extends PolarBear> extends QuadrupedModel<T> {
                 PartPose.offsetAndRotation(-2.0F, 10.0F, 12.0F, 1.5708F, 0.0F, 0.0F)
         );
 
-        PartDefinition rightHindLeg = partdefinition.addOrReplaceChild(
+        partdefinition.addOrReplaceChild(
                 "right_hind_leg",
                 CubeListBuilder.create()
                         .texOffs(52, 24)
@@ -54,7 +54,7 @@ public class BlackBearModel<T extends PolarBear> extends QuadrupedModel<T> {
                 PartPose.offset(4.0F, 16.0F, 5.0F)
         );
 
-        PartDefinition leftHindLeg = partdefinition.addOrReplaceChild(
+        partdefinition.addOrReplaceChild(
                 "left_hind_leg",
                 CubeListBuilder.create()
                         .texOffs(52, 24)
@@ -62,7 +62,7 @@ public class BlackBearModel<T extends PolarBear> extends QuadrupedModel<T> {
                 PartPose.offset(-4.0F, 16.0F, 5.0F)
         );
 
-        PartDefinition rightFrontLeg = partdefinition.addOrReplaceChild(
+        partdefinition.addOrReplaceChild(
                 "right_front_leg",
                 CubeListBuilder.create()
                         .texOffs(51, 41)
@@ -70,7 +70,7 @@ public class BlackBearModel<T extends PolarBear> extends QuadrupedModel<T> {
                 PartPose.offset(3.5F, 16.0F, -7.0F)
         );
 
-        PartDefinition leftFrontLeg = partdefinition.addOrReplaceChild(
+        partdefinition.addOrReplaceChild(
                 "left_front_leg",
                 CubeListBuilder.create()
                         .texOffs(51, 41)
@@ -82,31 +82,31 @@ public class BlackBearModel<T extends PolarBear> extends QuadrupedModel<T> {
     }
 
 
-    public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(@NotNull T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-        float partialTick = ageInTicks - (float)entity.tickCount;
+        float partialTick = ageInTicks - (float) entity.tickCount;
         float standingScaleSquared = entity.getStandingAnimationScale(partialTick);
         standingScaleSquared *= standingScaleSquared;
         float complement = 1.0F - standingScaleSquared;
-        this.body.xRot = ((float)Math.PI / 2F) - standingScaleSquared * (float)Math.PI * 0.35F;
+        this.body.xRot = ((float) Math.PI / 2F) - standingScaleSquared * (float) Math.PI * 0.35F;
         this.body.y = 10.0F * complement + 15.0F * standingScaleSquared;
-        this.rightFrontLeg.y = 16.0F * complement - 1.0F * standingScaleSquared;
+        this.rightFrontLeg.y = 16.0F * complement - standingScaleSquared;
         this.rightFrontLeg.z = -7.0F * complement - 3.0F * standingScaleSquared;
         ModelPart part = this.rightFrontLeg;
-        part.xRot -= standingScaleSquared * (float)Math.PI * 0.45F;
+        part.xRot -= standingScaleSquared * (float) Math.PI * 0.45F;
         this.leftFrontLeg.y = this.rightFrontLeg.y;
         this.leftFrontLeg.z = this.rightFrontLeg.z;
         part = this.leftFrontLeg;
-        part.xRot -= standingScaleSquared * (float)Math.PI * 0.45F;
+        part.xRot -= standingScaleSquared * (float) Math.PI * 0.45F;
         if (this.young) {
             this.head.y = 11.0F * complement - 8.0F * standingScaleSquared;
             this.head.z = -12.0F * complement - 8.0F * standingScaleSquared;
         } else {
             this.head.y = 12.0F * complement - 7.0F * standingScaleSquared;
-            this.head.z = -11.0F * complement - 1.0F * standingScaleSquared;
+            this.head.z = -11.0F * complement - standingScaleSquared;
         }
 
         part = this.head;
-        part.xRot += standingScaleSquared * (float)Math.PI * 0.15F;
+        part.xRot += standingScaleSquared * (float) Math.PI * 0.15F;
     }
 }
