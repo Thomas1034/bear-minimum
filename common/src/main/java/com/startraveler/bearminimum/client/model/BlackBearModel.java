@@ -99,8 +99,8 @@ public class BlackBearModel<T extends PolarBear> extends QuadrupedModel<T> {
         part = this.leftFrontLeg;
         part.xRot -= standingScaleSquared * (float)Math.PI * 0.45F;
         if (this.young) {
-            this.head.y = 10.0F * complement - 9.0F * standingScaleSquared;
-            this.head.z = -16.0F * complement - 12.0F * standingScaleSquared;
+            this.head.y = 11.0F * complement - 8.0F * standingScaleSquared;
+            this.head.z = -12.0F * complement - 8.0F * standingScaleSquared;
         } else {
             this.head.y = 12.0F * complement - 7.0F * standingScaleSquared;
             this.head.z = -11.0F * complement - 1.0F * standingScaleSquared;
