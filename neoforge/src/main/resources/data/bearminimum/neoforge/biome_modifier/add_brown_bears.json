@@ -1,12 +1,15 @@
 {
-    "type": "neoforge:add_spawns",
-    "biomes": "#bearminimum:has_brown_bear_spawns",
-    "spawners": [
-        {
-            "type": "bearminimum:brown_bear", 
-            "weight": 10, 
-            "minCount": 1, 
-            "maxCount": 4 
-        }
-    ]
+  "type": "neoforge:add_spawns",
+  "biomes": "#bearminimum:has_brown_bear_spawns",
+  "spawners": [
+    {
+      "type": "bearminimum:brown_bear",
+      "weight": 10,
+      "count": {
+        "type": "minecraft:uniform",
+        "min_inclusive": 1,
+        "max_inclusive": 4
+      }
+    }
+  ]
 }

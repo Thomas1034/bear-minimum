@@ -10,8 +10,8 @@ import com.startraveler.bearminimum.entity.BrownBearEntity;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.SpawnPlacementTypes;
@@ -23,7 +23,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.NestedLootTable;
-import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -69,15 +69,12 @@ public class BearMinimum {
     public static final DeferredHolder<Item, @NotNull SpawnEggItem> BLACK_BEAR_SPAWN_EGG = ITEMS.register(
             "black_bear_spawn_egg",
             () -> new SpawnEggItem(new Item.Properties().spawnEgg(BLACK_BEAR.get())
-                    .setId(Constants.key(Registries.ITEM, "black_bear_spawn_egg"))
-            )
+                    .setId(Constants.key(Registries.ITEM, "black_bear_spawn_egg")))
     );
     public static final DeferredHolder<Item, @NotNull SpawnEggItem> BROWN_BEAR_SPAWN_EGG = ITEMS.register(
             "brown_bear_spawn_egg",
-            () -> new SpawnEggItem(
-                    new Item.Properties().spawnEgg(BROWN_BEAR.get())
-                    .setId(Constants.key(Registries.ITEM, "brown_bear_spawn_egg"))
-            )
+            () -> new SpawnEggItem(new Item.Properties().spawnEgg(BROWN_BEAR.get())
+                    .setId(Constants.key(Registries.ITEM, "brown_bear_spawn_egg")))
     );
     public static final DeferredHolder<Item, @NotNull Item> BEAR_MEAT = ITEMS.register(
             "bear_meat",
@@ -90,10 +87,7 @@ public class BearMinimum {
                     .setId(Constants.key(Registries.ITEM, "cooked_bear_meat")))
     );
 
-    private static final Identifier POLAR_BEAR_LOOT_TABLE_ID = Identifier.fromNamespaceAndPath(
-            "minecraft",
-            "entities/polar_bear"
-    );
+    private static final Identifier POLAR_BEAR_LOOT_TABLE_ID = Identifier.withDefaultNamespace("entities/polar_bear");
     private static final ResourceKey<LootTable> MODIFIED_POLAR_BEAR_LOOT_TABLE_ID = Constants.key(
             Registries.LOOT_TABLE,
             "entities/polar_bear"
@@ -148,14 +142,18 @@ public class BearMinimum {
         @SubscribeEvent
         public static void registerSpawnPlacements(RegisterSpawnPlacementsEvent event) {
             event.register(
-                    BLACK_BEAR.get(), SpawnPlacementTypes.ON_GROUND,
+                    BLACK_BEAR.get(),
+                    SpawnPlacementTypes.ON_GROUND,
                     Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                    Animal::checkAnimalSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE
+                    Animal::checkAnimalSpawnRules,
+                    RegisterSpawnPlacementsEvent.Operation.REPLACE
             );
             event.register(
-                    BROWN_BEAR.get(), SpawnPlacementTypes.ON_GROUND,
+                    BROWN_BEAR.get(),
+                    SpawnPlacementTypes.ON_GROUND,
                     Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                    Animal::checkAnimalSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE
+                    Animal::checkAnimalSpawnRules,
+                    RegisterSpawnPlacementsEvent.Operation.REPLACE
             );
         }
 
@@ -179,16 +177,20 @@ public class BearMinimum {
         @SubscribeEvent
         public static void onLootTableLoad(LootTableLoadEvent event) {
             Identifier tableName = event.getName();
-
             if (tableName.equals(POLAR_BEAR_LOOT_TABLE_ID)) {
-                LootPool customPool = LootPool.lootPool()
-                        .name(Constants.MOD_ID + "_add_bear_drops")
-                        .setRolls(ConstantValue.exactly(1))
-                        .add(NestedLootTable.lootTableReference(MODIFIED_POLAR_BEAR_LOOT_TABLE_ID))
-                        .build();
-                event.getTable().addPool(customPool);
-
-
+                event.getRegistries().get(MODIFIED_POLAR_BEAR_LOOT_TABLE_ID).ifPresentOrElse(
+                        polarBearLootTable -> {
+                            LootPool customPool = LootPool.lootPool()
+                                    .name(Constants.MOD_ID + "_add_bear_drops")
+                                    .setRolls(ContextIntProviders.exactly(1))
+                                    .add(NestedLootTable.lootTableReference(polarBearLootTable))
+                                    .build();
+                            event.getTable().addPool(customPool);
+                        }, () -> Constants.LOG.warn(
+                                "Could not register additional polar bear loot. Could not find table {}.",
+                                MODIFIED_POLAR_BEAR_LOOT_TABLE_ID.identifier()
+                        )
+                );
             }
         }
     }

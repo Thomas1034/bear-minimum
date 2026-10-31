@@ -2,6 +2,7 @@ package com.startraveler.bearminimum;
 
 import com.startraveler.bearminimum.entity.BlackBearEntity;
 import com.startraveler.bearminimum.entity.BrownBearEntity;
+import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
@@ -26,7 +27,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.NestedLootTable;
-import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Function;
@@ -117,11 +118,19 @@ public class BearMinimum implements ModInitializer {
 
         LootTableEvents.MODIFY.register((ResourceKey<LootTable> id, LootTable.Builder builder, LootTableSource source, HolderLookup.Provider holderLookupProvider) -> {
             if (POLAR_BEAR_LOOT_TABLE_ID.equals(id)) {
-                LootPool customPool = LootPool.lootPool()
-                        .setRolls(ConstantValue.exactly(1))
-                        .add(NestedLootTable.lootTableReference(MODIFIED_POLAR_BEAR_LOOT_TABLE_ID))
-                        .build();
-                builder.pool(customPool);
+                holderLookupProvider.get(MODIFIED_POLAR_BEAR_LOOT_TABLE_ID).ifPresentOrElse(
+                        polarBearLootTable -> {
+                            LootPool customPool = LootPool.lootPool()
+                                    .setRolls(ContextIntProviders.exactly(1))
+                                    .add(NestedLootTable.lootTableReference(polarBearLootTable))
+                                    .build();
+                            builder.pool(customPool);
+                        }, () -> Constants.LOG.warn(
+                                "Could not register additional polar bear loot. Could not find table {}.",
+                                MODIFIED_POLAR_BEAR_LOOT_TABLE_ID.identifier()
+                        )
+                );
+
             }
         });
 

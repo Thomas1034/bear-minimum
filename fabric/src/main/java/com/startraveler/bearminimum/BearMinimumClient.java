@@ -4,6 +4,7 @@ import com.startraveler.bearminimum.client.model.BlackBearModel;
 import com.startraveler.bearminimum.client.model.BrownBearModel;
 import com.startraveler.bearminimum.client.renderer.BlackBearRenderer;
 import com.startraveler.bearminimum.client.renderer.BrownBearRenderer;
+import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.ModelLayerRegistry;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 

@@ -2,6 +2,7 @@ package com.startraveler.bearminimum;
 
 import com.startraveler.bearminimum.platform.Services;
 import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.level.storage.loot.LootPool;
 
 // This class is part of the common project meaning it is shared between all supported loaders. Code written here can only
 // import and access the vanilla codebase, libraries used by vanilla, and optionally third party libraries that provide
@@ -16,7 +17,6 @@ public class CommonClass {
     // write the majority of your code here and load it from your loader specific projects. This example has some
     // code that gets invoked by the entry point of the loader specific projects.
     public static void init() {
-
         /* Constants.LOG.info(
                 "Hello from Common init on {}! we are currently in a {} environment!",
                 Services.PLATFORM.getPlatformName(),
